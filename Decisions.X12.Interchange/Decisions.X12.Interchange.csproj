@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Decisions.X12\Decisions.X12.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="834\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DecisionsSDK" Version="8.14.0" />
+  </ItemGroup>
+
+</Project>
