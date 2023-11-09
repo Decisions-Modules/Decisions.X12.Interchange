@@ -2,7 +2,10 @@
 	"Resources": {
 		"NoComponents": true,
 		"CoreServicesDlls": [
-			"./Decisions.X12/obj/Decisions.X12.dll"
+			"./Decisions.X12.Interchange/obj/Decisions.X12.Interchange.dll"
+		],
+		"ReferenceDlls": [
+			"./Decisions.X12.Interchange/obj/Decisions.X12.dll"
 		],
 		"CliDlls": null,
 		"WebPages": null,
