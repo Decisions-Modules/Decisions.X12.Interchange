@@ -1,0 +1,19 @@
+{
+	"Resources": {
+		"NoComponents": true,
+		"CoreServicesDlls": [
+			"./Decisions.X12/obj/Decisions.X12.dll"
+		],
+		"CliDlls": null,
+		"WebPages": null,
+		"SilverlightDlls": null,
+		"AgentDlls": null,
+		"InstallScript": null,
+		"SqlScripts": null,
+		"ObjectsToImport": null,
+		"MsSqlScript": null
+    },
+    "Version": "8.17.0",
+    "ImagePath": "./image.svg",
+    "Description": "X12 Description"
+}
