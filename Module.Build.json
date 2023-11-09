@@ -17,6 +17,6 @@
 		"MsSqlScript": null
     },
     "Version": "8.17.0",
-    "ImagePath": "./image.svg",
+    "ImagePath": "./image.png",
     "Description": "X12 Description"
 }
