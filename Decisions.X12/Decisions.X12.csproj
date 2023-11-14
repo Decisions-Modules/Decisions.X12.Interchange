@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="..\Decisions.X12\Specifications\Ansi-*Specification.xml"/>
+    <EmbeddedResource Include="..\Decisions.X12\Transformations\*.xslt"/>
+  </ItemGroup>
+
 </Project>

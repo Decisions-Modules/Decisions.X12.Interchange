@@ -1,14 +1,18 @@
 ﻿using DecisionsFramework.Design.Flow;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.Xml.Xsl;
+using Decisions.X12.Parsing;
 
 namespace X12Interchange834
 {
     [AutoRegisterMethodsOnClass(true, "Data", "X12")]
     public static class X12Steps
     {
+        [ExcludeMethodOnAutoRegister]
+        [Obsolete]
         public static Interchange DeserializeFrom834(string Document834, bool InputIsPath = false)
         {
             // 834 -> lib Interchange -> xml -> Decisions Interchange
@@ -60,6 +64,61 @@ namespace X12Interchange834
                     return result;
                 }
             }
+        }
+        
+        public static string ConvertXmlToEdi(string xmlDocument, bool inputIsPath = false)
+        {
+            // X12 Xml string -> EDI string
+            var parser = new X12Parser(true);
+            string xmlString;
+
+            using (FileStream fs = inputIsPath ? 
+                       new FileStream(xmlDocument, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, FileOptions.None)
+                       : new FileStream(Path.GetTempFileName(), FileMode.Open, FileAccess.ReadWrite, FileShare.None, 4096, FileOptions.DeleteOnClose))
+            {
+                if (!inputIsPath)
+                {
+                    using (StreamWriter writer = new StreamWriter(fs, Encoding.UTF8, 4096, true))
+                    {
+                        writer.Write(xmlDocument);
+                    }
+
+                    fs.Position = 0;
+                }
+
+                using (StreamReader sr = new StreamReader(fs))
+                {
+                    xmlString = sr.ReadToEnd();
+                }
+
+                xmlString = parser.TransformToX12(xmlString);
+            }
+
+            return xmlString;
+        }
+
+        public static string ConvertEdiToXml(string ediString, bool inputIsPath = false)
+        {
+            // EDI string -> X12 Xml string
+            var parser = new X12Parser(true);
+            Decisions.X12.Parsing.Model.Interchange interchange;
+            
+            using (FileStream fs = inputIsPath ?
+                       new FileStream(ediString, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, FileOptions.None)
+                       : new FileStream(Path.GetTempFileName(), FileMode.Open, FileAccess.ReadWrite, FileShare.None, 4096, FileOptions.DeleteOnClose))
+            {
+                if (!inputIsPath)
+                {
+                    using (StreamWriter writer = new StreamWriter(fs, Encoding.UTF8, 4096, true))
+                    {
+                        writer.Write(ediString);
+                    }
+                    fs.Position = 0;
+                }
+                interchange = parser.Parse(fs);
+            }
+
+            return interchange.Serialize();
         }
 
         // Check loop type by ID and deserialize correctly:
@@ -130,6 +189,8 @@ namespace X12Interchange834
             }
         }
 
+        [ExcludeMethodOnAutoRegister]
+        [Obsolete]
         public static string SerializeTo834(Interchange Interchange)
         {
             // Decisions Interchange -> xml -> 834
