@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace X12Interchange834;
 
 [DataContract, Writable]
-public class NM1834
+public class NM1
 {
     [DataMember, WritableValue, PropertyClassification("Entity Identifier Code", 10)]
     public string NM101 { get; set; }

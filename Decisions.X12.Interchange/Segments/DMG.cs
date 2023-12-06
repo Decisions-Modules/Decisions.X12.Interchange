@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace X12Interchange834;
 
 [DataContract, Writable]
-public class DMG834
+public class DMG
 {
     [DataMember, WritableValue, PropertyClassification("Date Time Format Qualifier", 10)]
     public string DMG01 { get; set; }

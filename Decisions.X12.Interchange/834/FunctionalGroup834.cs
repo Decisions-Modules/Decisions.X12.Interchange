@@ -1,16 +1,17 @@
 ﻿using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
 using System.Runtime.Serialization;
+using X12InterchangeFunctionalGroup;
 
 namespace X12Interchange834;
 
 [DataContract, Writable]
-public class FunctionalGroup
+public class FunctionalGroup834
 {
     [DataMember, WritableValue, PropertyClassification("Functional Group Header", 1)]
-    public GS834 GS { get; set; }
+    public GS GS { get; set; }
     [DataMember, WritableValue, PropertyClassification("Transaction", 2)]
-    public Transaction Transaction { get; set; }
+    public Transaction834 Transaction { get; set; }
     [DataMember, WritableValue, PropertyClassification("Functional Group Trailer", 3)]
-    public GE834 GE { get; set; }
+    public GE GE { get; set; }
 }

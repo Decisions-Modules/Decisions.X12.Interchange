@@ -2,10 +2,10 @@
 using DecisionsFramework.Design.Properties;
 using System.Runtime.Serialization;
 
-namespace X12Interchange834;
+namespace X12InterchangeCommon;
 
 [DataContract, Writable]
-public class IEA834
+public class IEA
 {
     [DataMember, WritableValue, PropertyClassification("Number of Included Functional Groups", 10)]
     public string IEA01 { get; set; }

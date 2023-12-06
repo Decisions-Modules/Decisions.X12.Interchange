@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace X12Interchange834;
 
 [DataContract, Writable]
-public class N4834
+public class N4
 {
     [DataMember, WritableValue, PropertyClassification("City", 10)]
     public string N401 { get; set; }

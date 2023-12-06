@@ -1,9 +1,11 @@
-﻿using DecisionsFramework.Design.ConfigurationStorage.Attributes;
-using DecisionsFramework.Design.Properties;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using System.Xml.Serialization;
+using DecisionsFramework.Design.ConfigurationStorage.Attributes;
+using DecisionsFramework.Design.Properties;
+using X12Interchange834;
+using X12InterchangeCommon;
 
-namespace X12Interchange834;
+namespace X12Interchange824;
 
 [DataContract, Writable]
 public class Interchange
@@ -18,9 +20,9 @@ public class Interchange
     [XmlAttribute("sub-element-separator")]
     public string SubElementSeparator { get; set; }
     [DataMember, WritableValue, PropertyClassification("Interchange Control Header", 10)]
-    public ISA834 ISA { get; set; }
+    public ISA ISA { get; set; }
     [DataMember, WritableValue, PropertyClassification("Functional Group", 20)]
-    public FunctionalGroup FunctionGroup { get; set; }
+    public FunctionalGroup824 FunctionGroup { get; set; }
     [DataMember, WritableValue, PropertyClassification("Interchange Control Trailer", 30)]
-    public IEA834 IEA { get; set; }
+    public IEA IEA { get; set; }
 }

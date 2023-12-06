@@ -8,13 +8,13 @@ namespace X12Interchange834;
 public class MemberNameLoop
 {
     [DataMember, WritableValue, PropertyClassification("Member Name", 10)]
-    public NM1834 NM1 { get; set; }
+    public NM1 NM1 { get; set; }
     [DataMember, WritableValue, PropertyClassification("Member Communications Numbers", 20)]
-    public PER834 PER { get; set; }
+    public PER PER { get; set; }
     [DataMember, WritableValue, PropertyClassification("Member Residence Street Address", 30)]
-    public N3834 N3 { get; set; }
+    public N3 N3 { get; set; }
     [DataMember, WritableValue, PropertyClassification("Member Residence City, State, Zip", 40)]
-    public N4834 N4 { get; set; }
+    public N4 N4 { get; set; }
     [DataMember, WritableValue, PropertyClassification("Member Demographics", 50)]
-    public DMG834 DMG { get; set; }
+    public DMG DMG { get; set; }
 }

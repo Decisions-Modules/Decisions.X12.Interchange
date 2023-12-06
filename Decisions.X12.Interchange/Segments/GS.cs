@@ -2,10 +2,10 @@
 using DecisionsFramework.Design.Properties;
 using System.Runtime.Serialization;
 
-namespace X12Interchange834;
+namespace X12InterchangeFunctionalGroup;
 
 [DataContract, Writable]
-public class GS834
+public class GS
 {
     [DataMember, WritableValue, PropertyClassification("Functional Identifier Code", 10)]
     public string GS01 { get; set; }

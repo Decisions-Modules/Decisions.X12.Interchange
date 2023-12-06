@@ -2,10 +2,10 @@
 using DecisionsFramework.Design.Properties;
 using System.Runtime.Serialization;
 
-namespace X12Interchange834;
+namespace X12InterchangeFunctionalGroup;
 
 [DataContract, Writable]
-public class GE834
+public class GE
 {
     [DataMember, WritableValue, PropertyClassification("Number of Transaction Sets Included", 10)]
     public string GE01 { get; set; }

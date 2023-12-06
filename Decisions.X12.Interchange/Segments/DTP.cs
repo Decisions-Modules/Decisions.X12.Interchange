@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace X12Interchange834;
 
 [DataContract, Writable]
-public class DTP834
+public class DTP
 {
     [DataMember, WritableValue, PropertyClassification("Date Time Qualifier", 10)]
     public string DTP01 { get; set; }

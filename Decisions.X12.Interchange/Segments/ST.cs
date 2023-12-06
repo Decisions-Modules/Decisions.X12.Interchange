@@ -2,10 +2,10 @@
 using DecisionsFramework.Design.Properties;
 using System.Runtime.Serialization;
 
-namespace X12Interchange834;
+namespace X12InterchangeTransaction;
 
 [DataContract, Writable]
-public class ST834
+public class ST
 {
     [DataMember, WritableValue, PropertyClassification("Transaction Set Identifier Code", 10)]
     public string ST01 { get; set; }

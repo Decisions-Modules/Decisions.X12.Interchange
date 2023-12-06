@@ -2,10 +2,10 @@
 using DecisionsFramework.Design.Properties;
 using System.Runtime.Serialization;
 
-namespace X12Interchange834;
+namespace X12InterchangeCommon;
 
 [DataContract, Writable]
-public class ISA834
+public class ISA
 {
     [DataMember, WritableValue, PropertyClassification("Interchange Control Header", 10)]
     public string ISA01 { get; set; }
@@ -15,11 +15,11 @@ public class ISA834
     public string ISA03 { get; set; }
     [DataMember, WritableValue, PropertyClassification("Security Information", 40)]
     public string ISA04 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Interchange ID Qualifier (ISA05)", 50)]
+    [DataMember, WritableValue, PropertyClassification("Interchange ID Qualifier", 50)]
     public string ISA05 { get; set; }
     [DataMember, WritableValue, PropertyClassification("Interchange Sender ID", 60)]
     public string ISA06 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Interchange ID Qualifier (ISA07)", 70)]
+    [DataMember, WritableValue, PropertyClassification("Interchange ID Qualifier", 70)]
     public string ISA07 { get; set; }
     [DataMember, WritableValue, PropertyClassification("Interchange Receiver ID", 80)]
     public string ISA08 { get; set; }

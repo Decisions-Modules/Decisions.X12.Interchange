@@ -8,5 +8,5 @@ namespace X12Interchange834;
 public class SponsorNameLoop
 {
     [DataMember, WritableValue, PropertyClassification("Sponsor Name", 10)]
-    public N1834 N1 { get; set; }
+    public N1 N1 { get; set; }
 }

@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace X12Interchange834;
 
 [DataContract, Writable]
-public class PER834
+public class PER
 {
     [DataMember, WritableValue, PropertyClassification("Contact Function Code", 10)]
     public string PER01 { get; set; }

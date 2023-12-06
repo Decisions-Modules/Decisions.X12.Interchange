@@ -2,10 +2,10 @@
 using DecisionsFramework.Design.Properties;
 using System.Runtime.Serialization;
 
-namespace X12Interchange834;
+namespace X12InterchangeTransaction;
 
 [DataContract, Writable]
-public class SE834
+public class SE
 {
     [DataMember, WritableValue, PropertyClassification("Number of Included Segments", 10)]
     public string SE01 { get; set; }

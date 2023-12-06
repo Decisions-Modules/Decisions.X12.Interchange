@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace X12Interchange834;
 
 [DataContract, Writable]
-public class INS834
+public class INS
 {
     [DataMember, WritableValue, PropertyClassification("Insured Indicator", 10)]
     public string INS01 { get; set; }

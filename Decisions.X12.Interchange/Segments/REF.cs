@@ -1,6 +1,7 @@
 ﻿using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
 using System.Runtime.Serialization;
+using Decisions.X12.Interchange.Segments;
 
 namespace X12Interchange834;
 
@@ -11,4 +12,6 @@ public class REF
     public string REF01 { get; set; }
     [DataMember, WritableValue, PropertyClassification("Reference Identification", 20)]
     public string REF02 { get; set; }
+    [DataMember, WritableValue, PropertyClassification("Description", 30)]
+    public string REF03 { get; set; }
 }

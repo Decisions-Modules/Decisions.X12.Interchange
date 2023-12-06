@@ -8,7 +8,7 @@ namespace X12Interchange834;
 public class MemberLevelDetailLoop
 {
     [DataMember, WritableValue, PropertyClassification("Member Level Detail", 10)]
-    public INS834 INS { get; set; }
+    public INS INS { get; set; }
     [DataMember, WritableValue, PropertyClassification("Subscriber or Member Number", 20)]
     public REF REF { get; set; }
     [DataMember, WritableValue, PropertyClassification("Member Name Loop", 30)]

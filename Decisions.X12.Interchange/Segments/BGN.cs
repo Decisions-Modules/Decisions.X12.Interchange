@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace X12Interchange834;
 
 [DataContract, Writable]
-public class BGN834
+public class BGN
 {
     [DataMember, WritableValue, PropertyClassification("Transaction Set Purpose Code", 10)]
     public string BGN01 { get; set; }

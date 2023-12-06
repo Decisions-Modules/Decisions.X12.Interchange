@@ -8,9 +8,9 @@ namespace X12Interchange834;
 public class HealthCoverageLoop
 {
     [DataMember, WritableValue, PropertyClassification("Health Coverage", 10)]
-    public HD834 HD { get; set; }
+    public HD HD { get; set; }
     [DataMember, WritableValue, PropertyClassification("Health Coverage Dates", 20)]
-    public DTP834 DTP { get; set; }
+    public DTP DTP { get; set; }
     [DataMember, WritableValue, PropertyClassification("Health Coverage Policy Number", 30)]
     public REF REF { get; set; }
 }

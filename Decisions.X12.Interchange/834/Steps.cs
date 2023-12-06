@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.Xml.Xsl;
 using Decisions.X12.Parsing;
+using X12InterchangeCommon;
 
 namespace X12Interchange834
 {
@@ -13,7 +14,7 @@ namespace X12Interchange834
     {
         [ExcludeMethodOnAutoRegister]
         [Obsolete]
-        public static Interchange DeserializeFrom834(string Document834, bool InputIsPath = false)
+        public static Interchange834 DeserializeFrom834(string Document834, bool InputIsPath = false)
         {
             // 834 -> lib Interchange -> xml -> Decisions Interchange
             var parser = new Decisions.X12.Parsing.X12Parser(true);
@@ -43,12 +44,12 @@ namespace X12Interchange834
                 fs.Position = 0;
                 // Ignore ISA16 so the XmlSerializer doesn't throw an error when it sees an object instead of a string:
                 var overrides = new XmlAttributeOverrides();
-                overrides.Add(typeof(ISA834), nameof(ISA834.ISA16), new XmlAttributes { XmlIgnore = true });
-                var serializer = new XmlSerializer(typeof(Interchange), overrides);
+                overrides.Add(typeof(ISA), nameof(ISA.ISA16), new XmlAttributes { XmlIgnore = true });
+                var serializer = new XmlSerializer(typeof(Interchange834), overrides);
 
                 using (XmlReader xmlReader = XmlReader.Create(fs, new XmlReaderSettings { IgnoreComments = true, CheckCharacters = false }))
                 {
-                    Interchange result = (Interchange)serializer.Deserialize(xmlReader,
+                    Interchange834 result = (Interchange834)serializer.Deserialize(xmlReader,
                         new XmlDeserializationEvents
                         {
                             OnUnknownElement = HandleUnknownElement
@@ -131,26 +132,26 @@ namespace X12Interchange834
             {
                 case "1000A": // SponsorNameLoop
                     {
-                        Transaction transaction = args?.ObjectBeingDeserialized as Transaction;
-                        if (transaction == null)
+                        Transaction834 transaction834 = args?.ObjectBeingDeserialized as Transaction834;
+                        if (transaction834 == null)
                             throw new InvalidOperationException("Expected LoopId 1000A to be SponsorNameLoop inside Transaction");
 
-                        transaction.SponsorNameLoop = GetLoopValue<SponsorNameLoop>(args.Element);
+                        transaction834.SponsorNameLoop = GetLoopValue<SponsorNameLoop>(args.Element);
                     }
                     break;
                 case "2000": // MemberLevelDetailLoop
                     {
-                        Transaction transaction = args?.ObjectBeingDeserialized as Transaction;
-                        if (transaction == null)
+                        Transaction834 transaction834 = args?.ObjectBeingDeserialized as Transaction834;
+                        if (transaction834 == null)
                             throw new InvalidOperationException("Expected LoopId 2000 to be MemberLevelDetailLoop inside Transaction");
 
                         MemberLevelDetailLoop newLoop = GetLoopValue<MemberLevelDetailLoop>(args.Element);
 
-                        if (transaction.memberLevelDetailLoopForDeserialize == null)
-                            transaction.memberLevelDetailLoopForDeserialize = new List<MemberLevelDetailLoop>();
+                        if (transaction834.memberLevelDetailLoopForDeserialize == null)
+                            transaction834.memberLevelDetailLoopForDeserialize = new List<MemberLevelDetailLoop>();
 
                         // This list will be assigned to the array property at the end:
-                        transaction.memberLevelDetailLoopForDeserialize.Add(newLoop);
+                        transaction834.memberLevelDetailLoopForDeserialize.Add(newLoop);
                     }
                     break;
                 case "2100A": // MemberNameLoop
@@ -191,14 +192,14 @@ namespace X12Interchange834
 
         [ExcludeMethodOnAutoRegister]
         [Obsolete]
-        public static string SerializeTo834(Interchange Interchange)
+        public static string SerializeTo834(Interchange834 interchange834)
         {
             // Decisions Interchange -> xml -> 834
             string xml;
             using(var ms = new MemoryStream())
             {
-                var serializer = new XmlSerializer(typeof(Interchange));
-                serializer.Serialize(ms, Interchange);
+                var serializer = new XmlSerializer(typeof(Interchange834));
+                serializer.Serialize(ms, interchange834);
                 xml = Encoding.UTF8.GetString(ms.ToArray());
             }
 
