@@ -2,7 +2,7 @@
 using DecisionsFramework.Design.Properties;
 using System.Runtime.Serialization;
 
-namespace X12Interchange834;
+namespace Decisions.X12.Interchange.Segments;
 
 [DataContract, Writable]
 public class N3

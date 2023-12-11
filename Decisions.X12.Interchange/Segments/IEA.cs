@@ -2,7 +2,7 @@
 using DecisionsFramework.Design.Properties;
 using System.Runtime.Serialization;
 
-namespace X12InterchangeCommon;
+namespace Decisions.X12.Interchange.Segments;
 
 [DataContract, Writable]
 public class IEA

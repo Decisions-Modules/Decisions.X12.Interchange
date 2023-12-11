@@ -1,11 +1,10 @@
 ﻿using DecisionsFramework.Design.Flow;
 using System.Text;
 using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.Xml.Xsl;
+using Decisions.X12.Interchange.Segments;
 using Decisions.X12.Parsing;
-using X12InterchangeCommon;
 
 namespace X12Interchange834
 {

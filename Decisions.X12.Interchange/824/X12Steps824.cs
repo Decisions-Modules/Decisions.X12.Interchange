@@ -4,11 +4,10 @@ using System.Xml.Serialization;
 using Decisions.X12.Interchange.Segments;
 using Decisions.X12.Parsing;
 using DecisionsFramework.Design.Flow;
-using X12InterchangeCommon;
 
 namespace X12Interchange824;
 
-[AutoRegisterMethodsOnClass(true, "Data", "X12")]
+[AutoRegisterMethodsOnClass(true, "Data", "X12", "824")]
 public class X12Steps824 
 {
      public static Interchange Deseriale824EDI(string ediString, bool inputIsPath = false)
@@ -55,7 +54,7 @@ public class X12Steps824
                 Interchange result = (Interchange)serializer.Deserialize(xmlReader,
                     new XmlDeserializationEvents
                     {
-                        OnUnknownElement = HandleUnknownElement824
+                        OnUnknownElement = HandleUnknownElement
                     });
 
                 if (result?.FunctionGroup?.Transaction?.ST.ST01 != "824")
@@ -93,7 +92,7 @@ public class X12Steps824
         }
     }
      
-      private static void HandleUnknownElement824(object obj, XmlElementEventArgs args)
+      private static void HandleUnknownElement(object obj, XmlElementEventArgs args)
         {
             if (args?.Element?.Name != "Loop")
                 return;
@@ -106,7 +105,7 @@ public class X12Steps824
                     if(transaction == null)
                         throw new InvalidOperationException("Expected LoopId N1 to be N1Loop inside Transaction");
                     
-                    N1Loop n1Loop = GetLoopValue824<N1Loop>(args.Element);
+                    N1Loop n1Loop = GetLoopValue<N1Loop>(args.Element);
                     if (transaction.N1LoopForDeserialize == null)
                         transaction.N1LoopForDeserialize = new List<N1Loop>();
 
@@ -120,7 +119,7 @@ public class X12Steps824
                     if(transaction == null)
                         throw new InvalidOperationException("Expected LoopId OTI to be OTILoop inside Transaction");
                     
-                    OTILoop otiLoop = GetLoopValue824<OTILoop>(args.Element);
+                    OTILoop otiLoop = GetLoopValue<OTILoop>(args.Element);
                     if (transaction.OTILoopForDeserialize == null)
                         transaction.OTILoopForDeserialize = new List<OTILoop>();
 
@@ -134,19 +133,18 @@ public class X12Steps824
                     if (otiLoop == null)
                         throw new InvalidOperationException("Expected LoopId TED to be TEDLoop inside OTILoop");
 
-                    TEDLoop tedLoop = GetLoopValue824<TEDLoop>(args.Element);
+                    TEDLoop tedLoop = GetLoopValue<TEDLoop>(args.Element);
                     
                     if (otiLoop.TEDLoopForDeserialize == null)
                         otiLoop.TEDLoopForDeserialize = new List<TEDLoop>();
                     
                     otiLoop.TEDLoopForDeserialize.Add(tedLoop);
-                    
                 }
                 break;
             }
         }
       
-      private static TLoop GetLoopValue824<TLoop>(XmlElement element)
+      private static TLoop GetLoopValue<TLoop>(XmlElement element)
       {
           using (StringReader stringReader = new StringReader(element.OuterXml))
           using (XmlReader xmlReader = XmlReader.Create(stringReader, new XmlReaderSettings { IgnoreComments = true, CheckCharacters = false }))
@@ -154,7 +152,7 @@ public class X12Steps824
               XmlSerializer ser = new XmlSerializer(typeof(TLoop), new XmlRootAttribute(element.Name));
               TLoop loop = (TLoop)ser.Deserialize(xmlReader, new XmlDeserializationEvents
               {
-                  OnUnknownElement = HandleUnknownElement824
+                  OnUnknownElement = HandleUnknownElement
               });
 
               return loop;

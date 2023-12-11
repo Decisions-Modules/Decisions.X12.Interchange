@@ -4,7 +4,7 @@ using Decisions.X12.Interchange.Segments;
 using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
 
-namespace X12Interchange824;
+namespace X12Interchange277;
 
 [DataContract, Writable]
 public class Interchange
@@ -21,7 +21,7 @@ public class Interchange
     [DataMember, WritableValue, PropertyClassification("Interchange Control Header", 10)]
     public ISA ISA { get; set; }
     [DataMember, WritableValue, PropertyClassification("Function Group", 20)]
-    public FunctionGroup824 FunctionGroup { get; set; }
+    public FunctionGroup364 FunctionGroup { get; set; }
     [DataMember, WritableValue, PropertyClassification("Interchange Control Trailer", 30)]
     public IEA IEA { get; set; }
 }

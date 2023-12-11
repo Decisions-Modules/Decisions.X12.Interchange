@@ -2,7 +2,7 @@
 using DecisionsFramework.Design.Properties;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using X12InterchangeCommon;
+using Decisions.X12.Interchange.Segments;
 
 namespace X12Interchange834;
 

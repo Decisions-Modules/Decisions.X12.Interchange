@@ -1,8 +1,7 @@
 ﻿using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
 using System.Runtime.Serialization;
-using X12Interchange824;
-using X12InterchangeTransaction;
+using Decisions.X12.Interchange.Segments;
 
 namespace X12Interchange834;
 

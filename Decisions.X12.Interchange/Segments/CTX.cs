@@ -15,4 +15,10 @@ public class CTX
     public string CTX03 { get; set; }
     [DataMember, WritableValue, PropertyClassification("Loop Identifier Code", 40)]
     public string CTX04 { get; set; }
+    [DataMember, WritableValue, PropertyClassification("Position in Segment", 50)]
+    public string CTX05 { get; set; }
+    [DataMember, WritableValue, PropertyClassification("Reference in Segment", 60)]
+    public string CTX06 { get; set; }
+    [DataMember, WritableValue, PropertyClassification("Copy of Data Element", 70)]
+    public string CTX07 { get; set; }
 }

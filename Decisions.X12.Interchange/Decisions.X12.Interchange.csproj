@@ -12,8 +12,6 @@
 
   <ItemGroup>
     <Folder Include="834\" />
-    <Folder Include="824\" />
-    <Folder Include="Segments" />
   </ItemGroup>
 
   <ItemGroup>

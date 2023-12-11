@@ -1,9 +1,8 @@
 ﻿using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
 using System.Runtime.Serialization;
-using Decisions.X12.Interchange.Segments;
 
-namespace X12Interchange834;
+namespace Decisions.X12.Interchange.Segments;
 
 [DataContract, Writable]
 public class REF

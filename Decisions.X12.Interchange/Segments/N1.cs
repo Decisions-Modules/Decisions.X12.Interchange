@@ -2,7 +2,7 @@
 using DecisionsFramework.Design.Properties;
 using System.Runtime.Serialization;
 
-namespace X12Interchange834;
+namespace Decisions.X12.Interchange.Segments;
 
 [DataContract, Writable]
 public class N1
@@ -15,4 +15,8 @@ public class N1
     public string N103 { get; set; }
     [DataMember, WritableValue, PropertyClassification("Identification Code", 40)]
     public string N104 { get; set; }
+    [DataMember, WritableValue, PropertyClassification("Entity Relationship Code", 50)]
+    public string N105 { get; set; }
+    [DataMember, WritableValue, PropertyClassification("Entity Identifier Code", 50)]
+    public string N106 { get; set; }
 }
