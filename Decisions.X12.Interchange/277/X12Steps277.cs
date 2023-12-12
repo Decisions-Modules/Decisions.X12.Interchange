@@ -4,14 +4,15 @@ using System.Xml.Serialization;
 using Decisions.X12.Interchange.Segments;
 using Decisions.X12.Parsing;
 using DecisionsFramework.Design.Flow;
-using DecisionsFramework.Utilities;
+using X12Interchange277X364;
+using Interchange = X12Interchange277X364.Interchange;
 
 namespace X12Interchange277;
 
 [AutoRegisterMethodsOnClass(true, "Data", "X12", "277")]
 public class X12Steps277
 {
-    public static Interchange Deseriale277X364(string ediString, bool inputIsPath = false)
+    public static Interchange Deserialize277X364(string ediString, bool inputIsPath = false)
     {
         // EDI string -> X12 Xml string
         var parser = new X12Parser(true);
@@ -55,7 +56,7 @@ public class X12Steps277
                 Interchange result = (Interchange)serializer.Deserialize(xmlReader,
                     new XmlDeserializationEvents
                     {
-                        OnUnknownElement = HandleUnknownElement
+                        OnUnknownElement = HandleUnknownElement364
                     });
 
                 if (result?.FunctionGroup?.Transaction?.ST?.ST01 != "277")
@@ -106,17 +107,17 @@ public class X12Steps277
                     if (result.FunctionGroup.Transaction.SourceLevelLoop[0].ReceiverLevelLoop364
                             .ProviderLevelLoop364.Length > 0)
                     {
-                        foreach (var t in result.FunctionGroup.Transaction.SourceLevelLoop[0].ReceiverLevelLoop364
-                                     .ProviderLevelLoop364)
+                        foreach (var patientLevelLoop in result.FunctionGroup.Transaction.SourceLevelLoop[0].ReceiverLevelLoop364
+                                     .ProviderLevelLoop364.Select(x => x.PatientLevelLoop364))
                         {
-                            for (int i = 0; i < t.PatientLevelLoop364.Length; i++)
+                            for (int i = 0; i < patientLevelLoop.Length; i++)
                             {
-                                if (t.PatientLevelLoop364[i]
+                                if (patientLevelLoop[i]
                                         .ClaimLevelStatusInformationLoop364ForDeserialize != null)
                                 {
-                                    t.PatientLevelLoop364[i].ClaimLevelTrackingNumberLoop = t.PatientLevelLoop364[i]
+                                    patientLevelLoop[i].ClaimLevelTrackingNumberLoop = patientLevelLoop[i]
                                         .ClaimLevelStatusInformationLoop364ForDeserialize.ToArray();
-                                    t.PatientLevelLoop364[i].ClaimLevelStatusInformationLoop364ForDeserialize = null;
+                                    patientLevelLoop[i].ClaimLevelStatusInformationLoop364ForDeserialize = null;
                                 }
                             }
                         }
@@ -127,174 +128,174 @@ public class X12Steps277
             }
         }
     }
-     
-      private static void HandleUnknownElement(object obj, XmlElementEventArgs args)
+
+    private static void HandleUnknownElement364(object obj, XmlElementEventArgs args)
+    {
+        if ((bool)!args?.Element?.Name?.Contains("Loop"))
+            return;
+        
+        switch (args?.Element?.Attributes?["LoopId"]?.Value)
         {
-            if ((bool)!args?.Element?.Name?.Contains("Loop"))
-                return;
-            
-            switch (args?.Element?.Attributes?["LoopId"]?.Value)
+            case "2000A": // HierarchicalLoop
             {
-                case "2000A": // HierarchicalLoop
-                {
-                    Transaction364 transaction = args?.ObjectBeingDeserialized as Transaction364;
-                    if(transaction == null)
-                        throw new InvalidOperationException("Expected LoopId 2000A to be SourceLevelLoopLoop inside Transaction");
-                    
-                    SourceLevelLoop364 loop364 = GetLoopValue<SourceLevelLoop364>(args.Element);
-                    if (transaction.SourceLevelLoopForDeserialize == null)
-                        transaction.SourceLevelLoopForDeserialize = new List<SourceLevelLoop364>();
+                Transaction364 transaction = args?.ObjectBeingDeserialized as Transaction364;
+                if(transaction == null)
+                    throw new InvalidOperationException("Expected LoopId 2000A to be SourceLevelLoop inside Transaction");
+                
+                SourceLevelLoop364 loop364 = GetLoopValue364<SourceLevelLoop364>(args.Element);
+                if (transaction.SourceLevelLoopForDeserialize == null)
+                    transaction.SourceLevelLoopForDeserialize = new List<SourceLevelLoop364>();
 
-                    transaction.SourceLevelLoopForDeserialize.Add(loop364);
-                }
-                break;
-                case "2100A": // PayerNameLoop
-                {
-                    SourceLevelLoop364 sourceLevelLoop = args?.ObjectBeingDeserialized as SourceLevelLoop364;
-
-                    if (sourceLevelLoop == null)
-                        throw new InvalidOperationException("Expected LoopId 2100A inside SourceLevelLoop");
-
-                    PayerNameLoop364 loop364 = GetLoopValue<PayerNameLoop364>(args.Element);
-
-                    sourceLevelLoop.PayerNameLoop364 = loop364;
-                } 
-                break;
-                case "2200A": // ClaimSubmitterTraceNumberLoop
-                {
-                    SourceLevelLoop364 sourceLevelLoop = args?.ObjectBeingDeserialized as SourceLevelLoop364;
-
-                    if (sourceLevelLoop == null)
-                        throw new InvalidOperationException("Expected LoopId 2200A inside SourceLevelLoop");
-                    
-                    ClaimSubmitterTraceNumberLoop364 loop364 =
-                        GetLoopValue<ClaimSubmitterTraceNumberLoop364>(args.Element);
-
-                    sourceLevelLoop.ClaimSubmitterTraceNumberLoop364 = loop364;
-                }
-                break;
-                case "2000B": // ReceiverLevelLoop
-                {
-                    SourceLevelLoop364 sourceLevelLoop = args?.ObjectBeingDeserialized as SourceLevelLoop364;
-
-                    if (sourceLevelLoop == null)
-                        throw new InvalidOperationException("Expected LoopId 2000B inside SourceLevelLoop");
-                    
-                    ReceiverLevelLoop364 loop364 =
-                        GetLoopValue<ReceiverLevelLoop364>(args.Element);
-
-                    sourceLevelLoop.ReceiverLevelLoop364 = loop364;
-                }
-                break;
-                case "2100B": // ReceiverNameLoop
-                {
-                    ReceiverLevelLoop364 receiverLevelLoop = args?.ObjectBeingDeserialized as ReceiverLevelLoop364;
-
-                    if (receiverLevelLoop == null)
-                        throw new InvalidOperationException("Expected LoopId 2100B inside ReceiverLevelLoop");
-                    
-                    PayerNameLoop364 loop364 =
-                        GetLoopValue<PayerNameLoop364>(args.Element);
-
-                    receiverLevelLoop.ReceiverNameLoop364 = loop364;
-                }
-                break;
-                case "2200B": // ReceiverTraceLoop
-                {
-                    ReceiverLevelLoop364 receiverLevelLoop = args?.ObjectBeingDeserialized as ReceiverLevelLoop364;
-
-                    if (receiverLevelLoop == null)
-                        throw new InvalidOperationException("Expected LoopId 2200B inside ReceiverLevelLoop");
-                    
-                    ReceiverTraceLoop364 loop364 =
-                        GetLoopValue<ReceiverTraceLoop364>(args.Element);
-
-                    receiverLevelLoop.ReceiverTraceLoop364 = loop364;
-                }
-                break;
-                case "2000C": //ServiceProviderLevelLoop
-                {
-                    ReceiverLevelLoop364 receiverLevelLoop = args?.ObjectBeingDeserialized as ReceiverLevelLoop364;
-
-                    if (receiverLevelLoop == null)
-                        throw new InvalidOperationException("Expected LoopId 2000C inside ReceiverLevelLoop");
-                    
-                    ProviderLevelLoop364 loop364 =
-                        GetLoopValue<ProviderLevelLoop364>(args.Element);
-
-                    if (receiverLevelLoop.ProviderLevelLoop364ForDeserialize == null)
-                        receiverLevelLoop.ProviderLevelLoop364ForDeserialize = new List<ProviderLevelLoop364>();
-
-                    receiverLevelLoop.ProviderLevelLoop364ForDeserialize.Add(loop364);
-                }
-                break;
-                case "2100C":
-                {
-                    ProviderLevelLoop364 providerLevelLoop364 = args?.ObjectBeingDeserialized as ProviderLevelLoop364;
-
-                    if (providerLevelLoop364 == null)
-                        throw new InvalidOperationException("Expected LoopId 2100C inside ProviderLevelLoop");
-                    
-                    PayerNameLoop364 providerNameLoop = GetLoopValue<PayerNameLoop364>(args.Element);
-
-                    providerLevelLoop364.ProviderNameLoop = providerNameLoop;
-                }
-                break;
-                case "2200C":
-                {
-                    ProviderLevelLoop364 providerLevelLoop364 = args?.ObjectBeingDeserialized as ProviderLevelLoop364;
-
-                    if (providerLevelLoop364 == null)
-                        throw new InvalidOperationException("Expected LoopId 2200C inside ProviderLevelLoop");
-
-                    ProviderTraceLoop364 loop364 = GetLoopValue<ProviderTraceLoop364>(args.Element);
-
-                    providerLevelLoop364.ProviderTraceLoop364 = loop364;
-                }
-                break;
-                case "2000D":
-                {
-                    ProviderLevelLoop364 providerLevelLoop364 = args?.ObjectBeingDeserialized as ProviderLevelLoop364;
-                    if (providerLevelLoop364 == null)
-                        throw new InvalidOperationException("Expected LoopId 2000D inside ProviderLevelLoop");
-
-                    PatientLevelLoop364 loop364 = GetLoopValue<PatientLevelLoop364>(args.Element);
-
-                    if (providerLevelLoop364.PatientLevelLoop364ForDeserialize == null)
-                        providerLevelLoop364.PatientLevelLoop364ForDeserialize = new List<PatientLevelLoop364>();
-                    
-                    providerLevelLoop364.PatientLevelLoop364ForDeserialize.Add(loop364);
-                }
-                break;
-                case "2100D":
-                {
-                    PatientLevelLoop364 patientLevelLoop364 = args?.ObjectBeingDeserialized as PatientLevelLoop364;
-
-                    if (patientLevelLoop364 == null)
-                        throw new InvalidOperationException("Expected LoopId 2100D inside PatientLevelLoop");
-                    PayerNameLoop364 loop364 = GetLoopValue<PayerNameLoop364>(args.Element);
-
-                    patientLevelLoop364.PatientNameLoop = loop364;
-                }
-                break;
-                case "2200D":
-                {
-                    PatientLevelLoop364 patientLevelLoop364 = args?.ObjectBeingDeserialized as PatientLevelLoop364;
-                    if (patientLevelLoop364 == null)
-                        throw new InvalidOperationException("Expected LoopId 2200D inside PatientLevelLoop");
-
-                    ClaimLevelTrackingNumberLoop364 loop364 = GetLoopValue<ClaimLevelTrackingNumberLoop364>(args.Element);
-
-                    if (patientLevelLoop364.ClaimLevelStatusInformationLoop364ForDeserialize == null)
-                        patientLevelLoop364.ClaimLevelStatusInformationLoop364ForDeserialize = new List<ClaimLevelTrackingNumberLoop364>();
-                    
-                    patientLevelLoop364.ClaimLevelStatusInformationLoop364ForDeserialize.Add(loop364);
-                }
-                break;
+                transaction.SourceLevelLoopForDeserialize.Add(loop364);
             }
+            break;
+            case "2100A": // PayerNameLoop
+            {
+                SourceLevelLoop364 sourceLevelLoop = args?.ObjectBeingDeserialized as SourceLevelLoop364;
+
+                if (sourceLevelLoop == null)
+                    throw new InvalidOperationException("Expected LoopId 2100A inside SourceLevelLoop");
+
+                PayerNameLoop364 loop364 = GetLoopValue364<PayerNameLoop364>(args.Element);
+
+                sourceLevelLoop.PayerNameLoop364 = loop364;
+            } 
+            break;
+            case "2200A": // ClaimSubmitterTraceNumberLoop
+            {
+                SourceLevelLoop364 sourceLevelLoop = args?.ObjectBeingDeserialized as SourceLevelLoop364;
+
+                if (sourceLevelLoop == null)
+                    throw new InvalidOperationException("Expected LoopId 2200A inside SourceLevelLoop");
+                
+                ClaimSubmitterTraceNumberLoop364 loop364 =
+                    GetLoopValue364<ClaimSubmitterTraceNumberLoop364>(args.Element);
+
+                sourceLevelLoop.ClaimSubmitterTraceNumberLoop364 = loop364;
+            }
+            break;
+            case "2000B": // ReceiverLevelLoop
+            {
+                SourceLevelLoop364 sourceLevelLoop = args?.ObjectBeingDeserialized as SourceLevelLoop364;
+
+                if (sourceLevelLoop == null)
+                    throw new InvalidOperationException("Expected LoopId 2000B inside SourceLevelLoop");
+                
+                ReceiverLevelLoop364 loop364 =
+                    GetLoopValue364<ReceiverLevelLoop364>(args.Element);
+
+                sourceLevelLoop.ReceiverLevelLoop364 = loop364;
+            }
+            break;
+            case "2100B": // ReceiverNameLoop
+            {
+                ReceiverLevelLoop364 receiverLevelLoop = args?.ObjectBeingDeserialized as ReceiverLevelLoop364;
+
+                if (receiverLevelLoop == null)
+                    throw new InvalidOperationException("Expected LoopId 2100B inside ReceiverLevelLoop");
+                
+                PayerNameLoop364 loop364 =
+                    GetLoopValue364<PayerNameLoop364>(args.Element);
+
+                receiverLevelLoop.ReceiverNameLoop364 = loop364;
+            }
+            break;
+            case "2200B": // ReceiverTraceLoop
+            {
+                ReceiverLevelLoop364 receiverLevelLoop = args?.ObjectBeingDeserialized as ReceiverLevelLoop364;
+
+                if (receiverLevelLoop == null)
+                    throw new InvalidOperationException("Expected LoopId 2200B inside ReceiverLevelLoop");
+                
+                ReceiverTraceLoop364 loop364 =
+                    GetLoopValue364<ReceiverTraceLoop364>(args.Element);
+
+                receiverLevelLoop.ReceiverTraceLoop364 = loop364;
+            }
+            break;
+            case "2000C": //ServiceProviderLevelLoop
+            {
+                ReceiverLevelLoop364 receiverLevelLoop = args?.ObjectBeingDeserialized as ReceiverLevelLoop364;
+
+                if (receiverLevelLoop == null)
+                    throw new InvalidOperationException("Expected LoopId 2000C inside ReceiverLevelLoop");
+                
+                ProviderLevelLoop364 loop364 =
+                    GetLoopValue364<ProviderLevelLoop364>(args.Element);
+
+                if (receiverLevelLoop.ProviderLevelLoop364ForDeserialize == null)
+                    receiverLevelLoop.ProviderLevelLoop364ForDeserialize = new List<ProviderLevelLoop364>();
+
+                receiverLevelLoop.ProviderLevelLoop364ForDeserialize.Add(loop364);
+            }
+            break;
+            case "2100C":
+            {
+                ProviderLevelLoop364 providerLevelLoop364 = args?.ObjectBeingDeserialized as ProviderLevelLoop364;
+
+                if (providerLevelLoop364 == null)
+                    throw new InvalidOperationException("Expected LoopId 2100C inside ProviderLevelLoop");
+                
+                PayerNameLoop364 providerNameLoop = GetLoopValue364<PayerNameLoop364>(args.Element);
+
+                providerLevelLoop364.ProviderNameLoop = providerNameLoop;
+            }
+            break;
+            case "2200C":
+            {
+                ProviderLevelLoop364 providerLevelLoop364 = args?.ObjectBeingDeserialized as ProviderLevelLoop364;
+
+                if (providerLevelLoop364 == null)
+                    throw new InvalidOperationException("Expected LoopId 2200C inside ProviderLevelLoop");
+
+                ProviderTraceLoop364 loop364 = GetLoopValue364<ProviderTraceLoop364>(args.Element);
+
+                providerLevelLoop364.ProviderTraceLoop364 = loop364;
+            }
+            break;
+            case "2000D":
+            {
+                ProviderLevelLoop364 providerLevelLoop364 = args?.ObjectBeingDeserialized as ProviderLevelLoop364;
+                if (providerLevelLoop364 == null)
+                    throw new InvalidOperationException("Expected LoopId 2000D inside ProviderLevelLoop");
+
+                PatientLevelLoop364 loop364 = GetLoopValue364<PatientLevelLoop364>(args.Element);
+
+                if (providerLevelLoop364.PatientLevelLoop364ForDeserialize == null)
+                    providerLevelLoop364.PatientLevelLoop364ForDeserialize = new List<PatientLevelLoop364>();
+                
+                providerLevelLoop364.PatientLevelLoop364ForDeserialize.Add(loop364);
+            }
+            break;
+            case "2100D":
+            {
+                PatientLevelLoop364 patientLevelLoop364 = args?.ObjectBeingDeserialized as PatientLevelLoop364;
+
+                if (patientLevelLoop364 == null)
+                    throw new InvalidOperationException("Expected LoopId 2100D inside PatientLevelLoop");
+                PayerNameLoop364 loop364 = GetLoopValue364<PayerNameLoop364>(args.Element);
+
+                patientLevelLoop364.PatientNameLoop = loop364;
+            }
+            break;
+            case "2200D":
+            {
+                PatientLevelLoop364 patientLevelLoop364 = args?.ObjectBeingDeserialized as PatientLevelLoop364;
+                if (patientLevelLoop364 == null)
+                    throw new InvalidOperationException("Expected LoopId 2200D inside PatientLevelLoop");
+
+                ClaimLevelTrackingNumberLoop364 loop364 = GetLoopValue364<ClaimLevelTrackingNumberLoop364>(args.Element);
+
+                if (patientLevelLoop364.ClaimLevelStatusInformationLoop364ForDeserialize == null)
+                    patientLevelLoop364.ClaimLevelStatusInformationLoop364ForDeserialize = new List<ClaimLevelTrackingNumberLoop364>();
+                
+                patientLevelLoop364.ClaimLevelStatusInformationLoop364ForDeserialize.Add(loop364);
+            }
+            break;
         }
+    }
       
-      private static TLoop GetLoopValue<TLoop>(XmlElement element)
+      private static TLoop GetLoopValue364<TLoop>(XmlElement element)
       {
           using (StringReader stringReader = new StringReader(element.OuterXml))
           using (XmlReader xmlReader = XmlReader.Create(stringReader, new XmlReaderSettings { IgnoreComments = true, CheckCharacters = false }))
@@ -302,7 +303,7 @@ public class X12Steps277
               XmlSerializer ser = new XmlSerializer(typeof(TLoop), new XmlRootAttribute(element.Name));
               TLoop loop = (TLoop)ser.Deserialize(xmlReader, new XmlDeserializationEvents
               {
-                  OnUnknownElement = HandleUnknownElement
+                  OnUnknownElement = HandleUnknownElement364
               });
 
               return loop;

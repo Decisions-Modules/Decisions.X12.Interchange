@@ -10,7 +10,7 @@ namespace X12Interchange824;
 [AutoRegisterMethodsOnClass(true, "Data", "X12", "824")]
 public class X12Steps824 
 {
-     public static Interchange Deseriale824EDI(string ediString, bool inputIsPath = false)
+     public static Interchange Deserialize824EDI(string ediString, bool inputIsPath = false)
     {
         // EDI string -> X12 Xml string
         var parser = new X12Parser(true);

@@ -4,7 +4,7 @@ using Decisions.X12.Interchange.Segments;
 using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
 
-namespace X12Interchange277;
+namespace X12Interchange277X364;
 
 [DataContract, Writable]
 public class ServiceLineLoop364 // 2220 Loop

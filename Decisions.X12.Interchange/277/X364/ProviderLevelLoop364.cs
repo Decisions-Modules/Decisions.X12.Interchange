@@ -1,10 +1,9 @@
 ﻿using System.Runtime.Serialization;
-using System.Xml.Serialization;
 using Decisions.X12.Interchange.Segments;
 using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
 
-namespace X12Interchange277;
+namespace X12Interchange277X364;
 
 [DataContract, Writable]
 public class ProviderLevelLoop364 // 2000C Loop
