@@ -122,36 +122,7 @@ public class X12Steps277
                         }
                     }
                 }
-                
-                if (result?.FunctionGroup?.Transaction?.SourceLevelLoop.Length > 0)
-                {
-                    if (result.FunctionGroup.Transaction.SourceLevelLoop[0].ReceiverLevelLoop364
-                            .ProviderLevelLoop364.Length > 0)
-                    {
-                        foreach (var t in result.FunctionGroup.Transaction.SourceLevelLoop[0].ReceiverLevelLoop364
-                                     .ProviderLevelLoop364)
-                        {
-                            for (int i = 0; i < t.PatientLevelLoop364.Length; i++)
-                            {
-                                for (int j = 0;
-                                     j < t.PatientLevelLoop364[i].ClaimLevelTrackingNumberLoop.Length;
-                                     j++)
-                                {
-                                    if (t.PatientLevelLoop364[i].ClaimLevelTrackingNumberLoop[j]
-                                            .ServiceLineLoop364ForDeserialize != null)
-                                    {
-                                        t.PatientLevelLoop364[i].ClaimLevelTrackingNumberLoop[j].ServiceLineLoop364 =
-                                            t.PatientLevelLoop364[i].ClaimLevelTrackingNumberLoop[j]
-                                                .ServiceLineLoop364ForDeserialize.ToArray();
-                                        t.PatientLevelLoop364[i].ClaimLevelTrackingNumberLoop[j]
-                                            .ServiceLineLoop364ForDeserialize = null;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                
+
                 return result;
             }
         }
@@ -318,22 +289,6 @@ public class X12Steps277
                         patientLevelLoop364.ClaimLevelStatusInformationLoop364ForDeserialize = new List<ClaimLevelTrackingNumberLoop364>();
                     
                     patientLevelLoop364.ClaimLevelStatusInformationLoop364ForDeserialize.Add(loop364);
-                }
-                break;
-                case "2220D":
-                {
-                    ClaimLevelTrackingNumberLoop364 claimLevelTrackingNumberLoop364 = args?.ObjectBeingDeserialized as ClaimLevelTrackingNumberLoop364;
-
-                    if(claimLevelTrackingNumberLoop364 == null)
-                        throw new InvalidOperationException("Expected LoopId 2220D inside ClaimLevelStatusInformationLoop");
-                    
-                    ServiceLineLoop364 loop364 = GetLoopValue<ServiceLineLoop364>(args.Element);
-
-                    if (claimLevelTrackingNumberLoop364.ServiceLineLoop364ForDeserialize == null)
-                        claimLevelTrackingNumberLoop364.ServiceLineLoop364ForDeserialize =
-                            new List<ServiceLineLoop364>();
-                    
-                    claimLevelTrackingNumberLoop364.ServiceLineLoop364ForDeserialize.Add(loop364);
                 }
                 break;
             }

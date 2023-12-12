@@ -27,9 +27,7 @@ public class ClaimLevelTrackingNumberLoop364 // 2200D
     [DataMember, WritableValue, PropertyClassification("Claim Level Service Date", 60)]
     [XmlElement("DTP", Order = 6)]
     public DTP DTP { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Claim Level Service Date", 70)]
+    [DataMember, WritableValue, PropertyClassification("Service Line Information Loop", 70)]
     [XmlElement("Loop", Order = 7)]
     public ServiceLineLoop364[] ServiceLineLoop364 { get; set; } //2220D Loop
-
-    internal List<ServiceLineLoop364> ServiceLineLoop364ForDeserialize;
 }
