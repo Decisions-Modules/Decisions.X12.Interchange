@@ -13,4 +13,12 @@ public class N4
     public string N402 { get; set; }
     [DataMember, WritableValue, PropertyClassification("Postal Code", 30)]
     public string N403 { get; set; }
+    [DataMember, WritableValue, PropertyClassification("Country Code", 40)]
+    public string N404 { get; set; }
+    [DataMember, WritableValue, PropertyClassification("Location Qualifier", 50)]
+    public string N405 { get; set; }
+    [DataMember, WritableValue, PropertyClassification("Location Identifier", 60)]
+    public string N406 { get; set; }
+    [DataMember, WritableValue, PropertyClassification("Country Subdivision Code", 70)]
+    public string N407 { get; set; }
 }

@@ -229,7 +229,7 @@ public class X12Steps277
                 receiverLevelLoop.ProviderLevelLoop364ForDeserialize.Add(loop364);
             }
             break;
-            case "2100C":
+            case "2100C": // ProviderNameLoop
             {
                 ProviderLevelLoop364 providerLevelLoop364 = args?.ObjectBeingDeserialized as ProviderLevelLoop364;
 
@@ -241,7 +241,7 @@ public class X12Steps277
                 providerLevelLoop364.ProviderNameLoop = providerNameLoop;
             }
             break;
-            case "2200C":
+            case "2200C": // ProviderTraceLoop
             {
                 ProviderLevelLoop364 providerLevelLoop364 = args?.ObjectBeingDeserialized as ProviderLevelLoop364;
 
@@ -253,7 +253,7 @@ public class X12Steps277
                 providerLevelLoop364.ProviderTraceLoop364 = loop364;
             }
             break;
-            case "2000D":
+            case "2000D": //PatientLevelLoop
             {
                 ProviderLevelLoop364 providerLevelLoop364 = args?.ObjectBeingDeserialized as ProviderLevelLoop364;
                 if (providerLevelLoop364 == null)
@@ -267,7 +267,7 @@ public class X12Steps277
                 providerLevelLoop364.PatientLevelLoop364ForDeserialize.Add(loop364);
             }
             break;
-            case "2100D":
+            case "2100D": //PatientNameLoop
             {
                 PatientLevelLoop364 patientLevelLoop364 = args?.ObjectBeingDeserialized as PatientLevelLoop364;
 
@@ -278,7 +278,7 @@ public class X12Steps277
                 patientLevelLoop364.PatientNameLoop = loop364;
             }
             break;
-            case "2200D":
+            case "2200D": //ClaimLevelTrackingNumberLoop
             {
                 PatientLevelLoop364 patientLevelLoop364 = args?.ObjectBeingDeserialized as PatientLevelLoop364;
                 if (patientLevelLoop364 == null)

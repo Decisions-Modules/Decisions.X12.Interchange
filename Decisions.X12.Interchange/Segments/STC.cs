@@ -59,6 +59,7 @@ public class STC10
      public string STC1004 { get; set; }
 }
 
+[DataContract, Writable]
 public class STC11
 {
      [DataMember, WritableValue, PropertyClassification("Industry Code", 10)]

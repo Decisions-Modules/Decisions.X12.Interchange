@@ -23,6 +23,7 @@ public class SVC
     public string SVC07 { get; set; }
 }
 
+[DataContract, Writable]
 public class SVC01
 {
     [DataMember, WritableValue, PropertyClassification("Service ID Qualifier", 10)]
@@ -42,6 +43,8 @@ public class SVC01
     [DataMember, WritableValue, PropertyClassification("Service ID", 80)]
     public string SVC0108 { get; set; }
 }
+
+[DataContract, Writable]
 public class SVC06
 {
     [DataMember, WritableValue, PropertyClassification("Service ID Qualifier", 10)]
