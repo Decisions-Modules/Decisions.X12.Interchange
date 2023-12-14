@@ -16,7 +16,7 @@ public class Transaction824
     public N1Loop[] N1Loop { get; set; }
     [DataMember, WritableValue, PropertyClassification("OTI Loop", 40)]
     public OTILoop[] OTILoop { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Transaction Set Trailer", 70)]
+    [DataMember, WritableValue, PropertyClassification("Transaction Set Trailer", 50)]
     public SE SE { get; set; }
 
     internal List<N1Loop> N1LoopForDeserialize;
