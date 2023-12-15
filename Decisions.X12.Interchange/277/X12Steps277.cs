@@ -61,7 +61,7 @@ public class X12Steps277
 
                 if (result?.FunctionGroup?.Transaction?.ST?.ST01 != "277")
                     throw new InvalidOperationException("Incorrect document being used.  Please use 277");
-                
+
 
                 if (result?.FunctionGroup?.Transaction?.SourceLevelLoopForDeserialize != null)
                 {
@@ -81,10 +81,7 @@ public class X12Steps277
                         result.FunctionGroup.Transaction.SourceLevelLoop[0].ReceiverLevelLoop364
                             .ProviderLevelLoop364ForDeserialize = null;
                     }
-                }
-                
-                if (result?.FunctionGroup?.Transaction?.SourceLevelLoop.Length > 0)
-                {
+
                     if (result.FunctionGroup.Transaction.SourceLevelLoop[0].ReceiverLevelLoop364
                             .ProviderLevelLoop364.Length > 0)
                     {
@@ -98,26 +95,17 @@ public class X12Steps277
                                 t
                                     .PatientLevelLoop364ForDeserialize = null;
                             }
-                        }
-                    }
-                }
-                
-                if (result?.FunctionGroup?.Transaction?.SourceLevelLoop.Length > 0)
-                {
-                    if (result.FunctionGroup.Transaction.SourceLevelLoop[0].ReceiverLevelLoop364
-                            .ProviderLevelLoop364.Length > 0)
-                    {
-                        foreach (var patientLevelLoop in result.FunctionGroup.Transaction.SourceLevelLoop[0].ReceiverLevelLoop364
-                                     .ProviderLevelLoop364.Select(x => x.PatientLevelLoop364))
-                        {
-                            for (int i = 0; i < patientLevelLoop.Length; i++)
+
+                            if (t.PatientLevelLoop364 != null)
                             {
-                                if (patientLevelLoop[i]
-                                        .ClaimLevelStatusInformationLoop364ForDeserialize != null)
+                                foreach (var s in t.PatientLevelLoop364)
                                 {
-                                    patientLevelLoop[i].ClaimLevelTrackingNumberLoop = patientLevelLoop[i]
-                                        .ClaimLevelStatusInformationLoop364ForDeserialize.ToArray();
-                                    patientLevelLoop[i].ClaimLevelStatusInformationLoop364ForDeserialize = null;
+                                    if (s.ClaimLevelStatusInformationLoop364ForDeserialize != null)
+                                    {
+                                        s.ClaimLevelTrackingNumberLoop =
+                                            s.ClaimLevelStatusInformationLoop364ForDeserialize.ToArray();
+                                        s.ClaimLevelStatusInformationLoop364ForDeserialize = null;
+                                    }
                                 }
                             }
                         }

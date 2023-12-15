@@ -59,38 +59,38 @@ public class X12Steps835
 
                 if (result?.FunctionGroup?.Transaction?.ST.ST01 != "835")
                     throw new InvalidOperationException("Incorrect document being used.  Please use 835");
-                
+
                 if (result?.FunctionGroup?.Transaction?.HeaderNumberLoopForDeserialize != null)
                 {
                     result.FunctionGroup.Transaction.HeaderNumberLoop = result.FunctionGroup.Transaction
                         .HeaderNumberLoopForDeserialize.ToArray();
                     result.FunctionGroup.Transaction.HeaderNumberLoopForDeserialize = null;
-                }
-                
-                foreach (var t in result?.FunctionGroup?.Transaction?.HeaderNumberLoop)
-                {
-                    if (t.ClaimPaymentInformationLoopForDeserialize != null)
+                    
+                    foreach (var t in result?.FunctionGroup?.Transaction?.HeaderNumberLoop)
                     {
-                        t.ClaimPaymentInformationLoop = t.ClaimPaymentInformationLoopForDeserialize
-                            .ToArray();
-
-                        t
-                            .ClaimPaymentInformationLoopForDeserialize = null;
-                    }
-
-                    if (t.ClaimPaymentInformationLoop != null)
-                    {
-                        foreach (var s in t.ClaimPaymentInformationLoop)
+                        if (t.ClaimPaymentInformationLoopForDeserialize != null)
                         {
-                            if (s.ServicePaymentInformationLoopForDeserialize != null)
+                            t.ClaimPaymentInformationLoop = t.ClaimPaymentInformationLoopForDeserialize
+                                .ToArray();
+
+                            t
+                                .ClaimPaymentInformationLoopForDeserialize = null;
+                        }
+
+                        if (t.ClaimPaymentInformationLoop != null)
+                        {
+                            foreach (var s in t.ClaimPaymentInformationLoop)
                             {
-                                s.ServicePaymentInformationLoop = s.ServicePaymentInformationLoop.ToArray();
-                                s.ServicePaymentInformationLoopForDeserialize = null;
+                                if (s.ServicePaymentInformationLoopForDeserialize != null)
+                                {
+                                    s.ServicePaymentInformationLoop = s.ServicePaymentInformationLoop.ToArray();
+                                    s.ServicePaymentInformationLoopForDeserialize = null;
+                                }
                             }
                         }
                     }
                 }
-                
+
                 return result;
             }
         }
