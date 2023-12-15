@@ -8,12 +8,10 @@ using Decisions.X12.Parsing;
 
 namespace X12Interchange834
 {
-    [AutoRegisterMethodsOnClass(true, "Data", "X12")]
-    public static class X12Steps
+    [AutoRegisterMethodsOnClass(true, "Data", "X12", "834")]
+    public static class X12Steps834
     {
-        [ExcludeMethodOnAutoRegister]
-        [Obsolete]
-        public static Interchange834 DeserializeFrom834(string Document834, bool InputIsPath = false)
+        public static Interchange DeserializeFrom834(string Document834, bool InputIsPath = false)
         {
             // 834 -> lib Interchange -> xml -> Decisions Interchange
             var parser = new Decisions.X12.Parsing.X12Parser(true);
@@ -44,11 +42,11 @@ namespace X12Interchange834
                 // Ignore ISA16 so the XmlSerializer doesn't throw an error when it sees an object instead of a string:
                 var overrides = new XmlAttributeOverrides();
                 overrides.Add(typeof(ISA), nameof(ISA.ISA16), new XmlAttributes { XmlIgnore = true });
-                var serializer = new XmlSerializer(typeof(Interchange834), overrides);
+                var serializer = new XmlSerializer(typeof(Interchange), overrides);
 
                 using (XmlReader xmlReader = XmlReader.Create(fs, new XmlReaderSettings { IgnoreComments = true, CheckCharacters = false }))
                 {
-                    Interchange834 result = (Interchange834)serializer.Deserialize(xmlReader,
+                    Interchange result = (Interchange)serializer.Deserialize(xmlReader,
                         new XmlDeserializationEvents
                         {
                             OnUnknownElement = HandleUnknownElement
@@ -66,61 +64,6 @@ namespace X12Interchange834
             }
         }
         
-        public static string ConvertXmlToEdi(string xmlDocument, bool inputIsPath = false)
-        {
-            // X12 Xml string -> EDI string
-            var parser = new X12Parser(true);
-            string xmlString;
-
-            using (FileStream fs = inputIsPath ? 
-                       new FileStream(xmlDocument, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, FileOptions.None)
-                       : new FileStream(Path.GetTempFileName(), FileMode.Open, FileAccess.ReadWrite, FileShare.None, 4096, FileOptions.DeleteOnClose))
-            {
-                if (!inputIsPath)
-                {
-                    using (StreamWriter writer = new StreamWriter(fs, Encoding.UTF8, 4096, true))
-                    {
-                        writer.Write(xmlDocument);
-                    }
-
-                    fs.Position = 0;
-                }
-
-                using (StreamReader sr = new StreamReader(fs))
-                {
-                    xmlString = sr.ReadToEnd();
-                }
-
-                xmlString = parser.TransformToX12(xmlString);
-            }
-
-            return xmlString;
-        }
-
-        public static string ConvertEdiToXml(string ediString, bool inputIsPath = false)
-        {
-            // EDI string -> X12 Xml string
-            var parser = new X12Parser(true);
-            Decisions.X12.Parsing.Model.Interchange interchange;
-            
-            using (FileStream fs = inputIsPath ?
-                       new FileStream(ediString, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, FileOptions.None)
-                       : new FileStream(Path.GetTempFileName(), FileMode.Open, FileAccess.ReadWrite, FileShare.None, 4096, FileOptions.DeleteOnClose))
-            {
-                if (!inputIsPath)
-                {
-                    using (StreamWriter writer = new StreamWriter(fs, Encoding.UTF8, 4096, true))
-                    {
-                        writer.Write(ediString);
-                    }
-                    fs.Position = 0;
-                }
-                interchange = parser.Parse(fs);
-            }
-
-            return interchange.Serialize();
-        }
-
         // Check loop type by ID and deserialize correctly:
         private static void HandleUnknownElement(object obj, XmlElementEventArgs args)
         {
@@ -188,16 +131,14 @@ namespace X12Interchange834
                 return loop;
             }
         }
-
-        [ExcludeMethodOnAutoRegister]
-        [Obsolete]
-        public static string SerializeTo834(Interchange834 interchange834)
+        
+        public static string SerializeTo834(Interchange interchange834)
         {
             // Decisions Interchange -> xml -> 834
             string xml;
             using(var ms = new MemoryStream())
             {
-                var serializer = new XmlSerializer(typeof(Interchange834));
+                var serializer = new XmlSerializer(typeof(Interchange));
                 serializer.Serialize(ms, interchange834);
                 xml = Encoding.UTF8.GetString(ms.ToArray());
             }

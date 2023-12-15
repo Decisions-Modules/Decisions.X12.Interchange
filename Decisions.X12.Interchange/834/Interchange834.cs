@@ -7,7 +7,7 @@ using Decisions.X12.Interchange.Segments;
 namespace X12Interchange834;
 
 [DataContract, Writable]
-public class Interchange834
+public class Interchange
 {
     [DataMember, WritableValue, PropertyClassification("Segment Terminator", 1)]
     [XmlAttribute("segment-terminator")]
