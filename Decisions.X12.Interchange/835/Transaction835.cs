@@ -26,7 +26,7 @@ public class Transaction835
     [DataMember, WritableValue, PropertyClassification("Header Number Loop", 90)]
     public HeaderNumberLoop[] HeaderNumberLoop { get; set; } //2000 Loop
     
-    [DataMember, WritableValue, PropertyClassification("Transaction Set Trailer", 110)]
+    [DataMember, WritableValue, PropertyClassification("Transaction Set Trailer", 100)]
     public SE SE { get; set; }
 
     internal List<HeaderNumberLoop> HeaderNumberLoopForDeserialize;
