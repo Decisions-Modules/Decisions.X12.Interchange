@@ -7,7 +7,7 @@ using DecisionsFramework.Design.Properties;
 namespace Decisions.X12.Interchange278X217Review;
 
 [DataContract, Writable]
-public class ServiceDetailLoop217Review // 2000F
+public class ServiceLevelLoop217Review // 2000F
 {
     [DataMember, WritableValue, PropertyClassification("Hierarchical Level", 10)]
     [XmlElement("HL", Order = 1)]
@@ -42,13 +42,13 @@ public class ServiceDetailLoop217Review // 2000F
     [DataMember, WritableValue, PropertyClassification("Health Care Services Delivery", 110)]
     [XmlElement("HSD", Order = 11)]
     public HSD HSD { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Additional Patient Information", 120)]
+    [DataMember, WritableValue, PropertyClassification("Additional Service Information", 120)]
     [XmlElement("PWK", Order = 12)]
     public PWK PWK { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Additional Patient Information", 130)]
+    [DataMember, WritableValue, PropertyClassification("Message Text", 130)]
     [XmlElement("MSG", Order = 13)]
     public MSG MSG { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Additional Patient Information", 140)]
+    [DataMember, WritableValue, PropertyClassification("Service Provider Name Loop", 140)]
     [XmlElement("Loop", Order = 14)]
     public ServiceProviderLoop217Review[] ServiceProviderLoop { get; set; } // 2010F
 }

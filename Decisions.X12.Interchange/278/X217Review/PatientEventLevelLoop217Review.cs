@@ -93,7 +93,7 @@ public class PatientEventLevelLoop217Review // 2000E
     [DataMember, WritableValue, PropertyClassification("Patient Event Provider Loop", 280)]
     [XmlElement("Loop", Order = 28)]
     public PatientEventProviderLoop217Review[] PatientEventProviderLoop { get; set; } // 2010EA
-    [DataMember, WritableValue, PropertyClassification("Patient Event Transport Loop", 290)]
+    [DataMember, WritableValue, PropertyClassification("Service Level Loop", 290)]
     [XmlElement("HierarchicalLoop", Order = 29)]
-    public ServiceDetailLoop217Review[] ServiceDetailLoop { get; set; } // 2000F
+    public ServiceLevelLoop217Review[] ServiceLevelLoop { get; set; } // 2000F
 }
