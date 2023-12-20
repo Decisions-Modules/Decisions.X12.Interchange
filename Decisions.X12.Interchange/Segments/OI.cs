@@ -1,15 +1,11 @@
 ﻿using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Decisions.X12.Interchange.Segments
 {
-    internal class OI
+    [DataContract, Writable]
+    public class OI
     {
         [DataMember, WritableValue, PropertyClassification("Claim Filing Indicator Code", 10)]
         public string OI01 { get; set; }

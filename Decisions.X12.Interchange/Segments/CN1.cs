@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 
 namespace Decisions.X12.Interchange.Segments
 {
+    [DataContract, Writable]
     public class CN1
     {
         [DataMember, WritableValue, PropertyClassification("Contract Type Code", 10)]

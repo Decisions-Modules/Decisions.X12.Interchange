@@ -4,9 +4,9 @@ using System.Runtime.Serialization;
 
 namespace Decisions.X12.Interchange.Segments
 {
+    [DataContract, Writable]
     public class CUR
     {
-
         [DataMember, WritableValue, PropertyClassification("Entity Identifier Code", 10)]
         public string CUR01 { get; set; }
         [DataMember, WritableValue, PropertyClassification("Currency Code", 20)]

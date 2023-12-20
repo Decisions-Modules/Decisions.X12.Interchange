@@ -1,15 +1,11 @@
 ﻿using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Decisions.X12.Interchange.Segments
 {
-    internal class CR3
+    [DataContract, Writable]
+    public class CR3
     {
         [DataMember, WritableValue, PropertyClassification("Certification Type Code", 10)]
         public string CR301 { get; set; }

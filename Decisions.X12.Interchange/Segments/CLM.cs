@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 
 namespace Decisions.X12.Interchange.Segments
 {
+    [DataContract, Writable]
     public class CLM
     {
         [DataMember, WritableValue, PropertyClassification("Claim Submitter's Identifier", 10)]
@@ -49,6 +50,7 @@ namespace Decisions.X12.Interchange.Segments
 
     }
 
+    [DataContract, Writable]
     public class CLM05
     {
         [DataMember, WritableValue, PropertyClassification("Facility Code Value", 10)]  
@@ -59,6 +61,7 @@ namespace Decisions.X12.Interchange.Segments
         public string CLM0503 { get; set; }
     }
 
+    [DataContract, Writable]
     public class CLM11
     {
         [DataMember, WritableValue, PropertyClassification("Related-Causes Code", 10)]

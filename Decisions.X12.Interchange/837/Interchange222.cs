@@ -21,7 +21,7 @@ public class Interchange
     [DataMember, WritableValue, PropertyClassification("Interchange Control Header", 10)]
     public ISA ISA { get; set; }
     [DataMember, WritableValue, PropertyClassification("Functional Group", 20)]
-    public FunctionGroup837 FunctionGroup { get; set; }
+    public FunctionGroup222 FunctionGroup { get; set; }
     [DataMember, WritableValue, PropertyClassification("Interchange Control Trailer", 30)]
     public IEA IEA { get; set; }
 }

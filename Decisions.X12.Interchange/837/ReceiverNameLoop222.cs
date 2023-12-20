@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace X12Interchange837
 {
-    public class ReceiverNameLoop222
+    public class ReceiverNameLoop222 // 1000B
     {
         [DataMember, WritableValue, PropertyClassification("Name", 10)]
         public NM1 NM1 { get; set; }

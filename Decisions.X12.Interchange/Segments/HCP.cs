@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 
 namespace Decisions.X12.Interchange.Segments
 {
+    [DataContract, Writable]
     public class HCP
     {
         [DataMember, WritableValue, PropertyClassification("Pricing Methodology", 10)]

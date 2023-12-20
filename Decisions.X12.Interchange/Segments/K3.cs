@@ -1,14 +1,10 @@
 ﻿using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Decisions.X12.Interchange.Segments
 {
+    [DataContract, Writable]
     public class K3
     {
         [DataMember, WritableValue, PropertyClassification("Fixed Format Information", 10)]
@@ -20,6 +16,7 @@ namespace Decisions.X12.Interchange.Segments
 
     }
 
+    [DataContract, Writable]
     public class K303
     {
         [DataMember, WritableValue, PropertyClassification("Unit for Measurement Code", 10)]

@@ -1,15 +1,11 @@
 ﻿using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Decisions.X12.Interchange.Segments
 {
-    internal class MEA
+    [DataContract, Writable]
+    public class MEA
     {
         [DataMember, WritableValue, PropertyClassification("Measurement Reference ID Code", 10)]
         public string MEA01 { get; set; }
@@ -37,6 +33,7 @@ namespace Decisions.X12.Interchange.Segments
         public string MEA12 { get; set; }
     }
 
+    [DataContract, Writable]
     public class MEA04
     {
         [DataMember, WritableValue, PropertyClassification("Unit for Measurement Code", 10)]

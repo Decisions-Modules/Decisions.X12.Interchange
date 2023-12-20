@@ -1,15 +1,11 @@
 ﻿using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Decisions.X12.Interchange.Segments
 {
-    internal class SV5
+    [DataContract, Writable]
+    public class SV5
     {
         [DataMember, WritableValue, PropertyClassification("Composite Medical Procedure Identifier", 10)]
         public SV501 SV501 { get; set; }
@@ -27,6 +23,7 @@ namespace Decisions.X12.Interchange.Segments
         public string SV507 { get; set; }
     }
     
+    [DataContract, Writable]
     public class SV501
     {
         [DataMember, WritableValue, PropertyClassification("Service ID Qualifier", 10)]
