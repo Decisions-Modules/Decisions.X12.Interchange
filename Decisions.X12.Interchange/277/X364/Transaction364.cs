@@ -14,9 +14,9 @@ public class Transaction364
     public BHT BHT { get; set; }
 
     [DataMember, WritableValue, PropertyClassification("Information Source Level Hierarchical Loop", 30)]
-    public SourceLevelLoop364[] SourceLevelLoop { get; set; } // 2000A
+    public SourceLevelLoop3642000A[] SourceLevelLoop3642000A { get; set; } // 2000A
     [DataMember, WritableValue, PropertyClassification("Transaction Set Trailer", 40)]
     public SE SE { get; set; }
     
-    internal List<SourceLevelLoop364> SourceLevelLoopForDeserialize;
+    internal List<SourceLevelLoop3642000A> SourceLevelLoop3642000AForDeserialize;
 }

@@ -7,12 +7,11 @@ using DecisionsFramework.Design.Properties;
 namespace X12Interchange277X364;
 
 [DataContract, Writable]
-public class ClaimSubmitterTraceNumberLoop364 // 2200A
+public class ClaimSubmitterTraceNumberLoop3642200A // 2200A
 {
     [DataMember, WritableValue, PropertyClassification("Transmission Receipt Control Identifier", 10)]
     public TRN TRN { get; set; }
-    
     [XmlElement("DTP")]
-    [DataMember, WritableValue, PropertyClassification("Information Source Receipt Date", 20)]
+    [DataMember, WritableValue, PropertyClassification("Information Source Date", 20)]
     public DTP[] DTP { get; set; }
 }

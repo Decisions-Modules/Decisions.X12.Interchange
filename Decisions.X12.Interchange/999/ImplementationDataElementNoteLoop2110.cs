@@ -7,7 +7,7 @@ using DecisionsFramework.Design.Properties;
 namespace X12Interchange999;
 
 [DataContract, Writable]
-public class ImplementationDataElementNoteLoop2110
+public class ImplementationDataElementNoteLoop2110 // 2110
 {
     [DataMember, WritableValue, PropertyClassification("Implementation Data Element Note", 10)]
     public IK4 IK4 { get; set; }

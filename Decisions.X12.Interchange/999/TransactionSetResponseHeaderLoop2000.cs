@@ -6,7 +6,7 @@ using DecisionsFramework.Design.Properties;
 namespace X12Interchange999;
 
 [DataContract, Writable]
-public class TransactionSetResponseHeaderLoop2000
+public class TransactionSetResponseHeaderLoop2000 // 2000
 {
     [DataMember, WritableValue, PropertyClassification("Transaction Set Response Header", 10)]
     public AK2 AK2 { get; set; }

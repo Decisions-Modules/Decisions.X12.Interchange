@@ -7,7 +7,7 @@ using DecisionsFramework.Design.Properties;
 namespace X12Interchange999;
 
 [DataContract, Writable]
-public class ErrorIdentificationLoop2100
+public class ErrorIdentificationLoop2100 // 2100
 {
     [DataMember, WritableValue, PropertyClassification("Error Identification", 10)]
     public IK3 IK3 { get; set; }
