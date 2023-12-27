@@ -7,7 +7,7 @@ using DecisionsFramework.Design.Properties;
 namespace Decisions.X12.Interchange278X217Review;
 
 [DataContract, Writable]
-public class SubscriberNameLoop217Review // 2010C
+public class PatientEventProviderLoop217Review2010EA // 2010EA
 {
     [DataMember, WritableValue, PropertyClassification("Name", 10)]
     public NM1 NM1 { get; set; }
@@ -18,8 +18,8 @@ public class SubscriberNameLoop217Review // 2010C
     public N3 N3 { get; set; }
     [DataMember, WritableValue, PropertyClassification("City, State, Zip Code", 40)]
     public N4 N4 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Demographic Information", 50)]
-    public DMG DMG { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Relationship", 60)]
-    public INS INS { get; set; }
+    [DataMember, WritableValue, PropertyClassification("Contact Information", 50)]
+    public PER PER { get; set; }
+    [DataMember, WritableValue, PropertyClassification("Provider Information", 60)]
+    public PRV PRV { get; set; }
 }

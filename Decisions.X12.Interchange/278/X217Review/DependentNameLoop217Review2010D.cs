@@ -7,7 +7,7 @@ using DecisionsFramework.Design.Properties;
 namespace Decisions.X12.Interchange278X217Review;
 
 [DataContract, Writable]
-public class DependentNameLoop217Review // 2010D
+public class DependentNameLoop217Review2010D // 2010D
 {
     [DataMember, WritableValue, PropertyClassification("Name", 10)]
     public NM1 NM1 { get; set; }
