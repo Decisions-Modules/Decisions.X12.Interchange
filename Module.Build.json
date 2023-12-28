@@ -16,7 +16,7 @@
 		"ObjectsToImport": null,
 		"MsSqlScript": null
     },
-    "Version": "8.17.0",
+    "Version": "9.0.0",
     "ImagePath": "./image.png",
-    "Description": "X12 Description"
+    "Description": "X12 is an ANSI-accredited, consensus-based, non-profit organization focusing on the development, implementation, and ongoing use of interoperable electronic data interchange standards."
 }
