@@ -19,7 +19,7 @@ public class PatientHierarchicalLoop222 // 2000C Loop
     
     // 2300 Loop
     [DataMember, WritableValue, PropertyClassification("Claim Information Loop", 40)]
-    public ClaimInformationLoop222[] ClaimInformationLoop { get; set; }
+    public ClaimInformationLoop222[] ClaimInformationLoop222 { get; set; }
     
     internal List<ClaimInformationLoop222> ClaimInformationLoopForDeserialize;
 }

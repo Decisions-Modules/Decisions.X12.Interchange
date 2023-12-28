@@ -23,7 +23,7 @@ public class ClaimInformationLoop222 // 2300 Loop
     public AMT AMT { get; set; }
     [DataMember, WritableValue, PropertyClassification("Additional Information", 60)]
     [XmlElement("REF")]
-    public List<REF> REF { get; set; }
+    public REF[] REF { get; set; }
     [DataMember, WritableValue, PropertyClassification("File Information", 70)]
     [XmlElement("K3")]
     public K3[] K3 { get; set; }

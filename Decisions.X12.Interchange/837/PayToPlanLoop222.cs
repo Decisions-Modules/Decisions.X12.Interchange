@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.Xml.Serialization;
 using Decisions.X12.Interchange.Segments;
 using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
@@ -14,6 +15,7 @@ public class PayToPlanLoop222 // 2010AC Loop
     public N3 N3 { get; set; }
     [DataMember, WritableValue, PropertyClassification("City, State, Zip Code", 30)]
     public N4 N4 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Identification Number", 40)]
-    public REF REF { get; set; }
+    [DataMember, WritableValue, PropertyClassification("Additional Identification", 40)]
+    [XmlElement("REF")]
+    public REF[] REF { get; set; }
 }

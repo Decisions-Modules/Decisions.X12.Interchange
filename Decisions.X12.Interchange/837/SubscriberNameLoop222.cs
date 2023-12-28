@@ -7,7 +7,7 @@ using DecisionsFramework.Design.Properties;
 namespace X12Interchange837;
 
 [DataContract, Writable]
-public class SubscriberNameLoop222 //2010BA Loop
+public class SubscriberNameLoop222 // 2010BA Loop
 {
     [DataMember, WritableValue, PropertyClassification("Name", 10)]
     public NM1 NM1 { get; set; }

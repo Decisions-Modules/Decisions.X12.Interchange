@@ -11,14 +11,14 @@ namespace X12Interchange837;
 [AutoRegisterMethodsOnClass(true, "Data", "X12", "837")]
 public class X12Steps837
 {
-    public static Interchange Deserialize837EDI(string ediString, bool inputIsPath = false)
+    public static Interchange Deserialize837EDI(string Document837, bool inputIsPath = false)
     {
         // EDI string -> X12 Xml string
         var parser = new X12Parser(true);
         Decisions.X12.Parsing.Model.Interchange interchange;
 
         using (FileStream fs = inputIsPath
-                   ? new FileStream(ediString, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096,
+                   ? new FileStream(Document837, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096,
                        FileOptions.None)
                    : new FileStream(Path.GetTempFileName(), FileMode.Open, FileAccess.ReadWrite, FileShare.None,
                        4096, FileOptions.DeleteOnClose))
@@ -27,7 +27,7 @@ public class X12Steps837
             {
                 using (StreamWriter writer = new StreamWriter(fs, Encoding.UTF8, 4096, true))
                 {
-                    writer.Write(ediString);
+                    writer.Write(Document837);
                 }
 
                 fs.Position = 0;
@@ -66,103 +66,91 @@ public class X12Steps837
                     result.FunctionGroup.Transaction.BillingProviderHierarchicalLevelLoop222 = result.FunctionGroup
                         .Transaction.BillingProviderHierarchicalLevelLoop222ForDeserialize.ToArray();
                     result.FunctionGroup.Transaction.BillingProviderHierarchicalLevelLoop222ForDeserialize = null;
-                }
-
-                if (result?.FunctionGroup?.Transaction?.BillingProviderHierarchicalLevelLoop222 != null)
-                {
-                    foreach (var t in result.FunctionGroup.Transaction.BillingProviderHierarchicalLevelLoop222)
+                    
+                    if (result?.FunctionGroup?.Transaction?.BillingProviderHierarchicalLevelLoop222 != null)
                     {
-                        if (t.SubscriberHierarchicalLevelLoop222ForDeserialize != null)
+                        foreach (var t in result.FunctionGroup.Transaction.BillingProviderHierarchicalLevelLoop222)
                         {
-                            t.SubscriberHierarchicalLevelLoop222 =
-                                t.SubscriberHierarchicalLevelLoop222ForDeserialize.ToArray();
-                            t.SubscriberHierarchicalLevelLoop222ForDeserialize = null;
-                        }
-
-                        if (t.SubscriberHierarchicalLevelLoop222 != null)
-                        {
-                            foreach (var s in t.SubscriberHierarchicalLevelLoop222)
+                            if (t.SubscriberHierarchicalLevelLoop222ForDeserialize != null)
                             {
-                                if (s.PatientHierarchicalLoop222ForDeserialize != null)
+                                t.SubscriberHierarchicalLevelLoop222 = t.SubscriberHierarchicalLevelLoop222ForDeserialize.ToArray();
+                                t.SubscriberHierarchicalLevelLoop222ForDeserialize = null;
+                                
+                                if (t.SubscriberHierarchicalLevelLoop222 != null)
                                 {
-                                    s.PatientHierarchicalLoop222 = s.PatientHierarchicalLoop222ForDeserialize.ToArray();
-                                    s.PatientHierarchicalLoop222ForDeserialize = null;
-                                }
-
-                                if (s.PatientHierarchicalLoop222 != null)
-                                {
-                                    foreach (var r in s.PatientHierarchicalLoop222)
+                                    foreach (var s in t.SubscriberHierarchicalLevelLoop222)
                                     {
-                                        if (r.ClaimInformationLoopForDeserialize != null)
+                                        if (s.PatientHierarchicalLoop222ForDeserialize != null)
                                         {
-                                            r.ClaimInformationLoop = r.ClaimInformationLoopForDeserialize.ToArray();
-                                            r.ClaimInformationLoopForDeserialize = null;
+                                            s.PatientHierarchicalLoop222 = s.PatientHierarchicalLoop222ForDeserialize.ToArray();
+                                            s.PatientHierarchicalLoop222ForDeserialize = null;
                                         }
-                                        
-                                        if (r.ClaimInformationLoop != null)
+
+                                        if (s.PatientHierarchicalLoop222 != null)
                                         {
-                                            foreach (var q in r.ClaimInformationLoop)
+                                            foreach (var r in s.PatientHierarchicalLoop222)
                                             {
-                                                if (q.ReferringProviderNameLoop222ForDeserialize != null)
+                                                if (r.ClaimInformationLoopForDeserialize != null)
                                                 {
-                                                    q.ReferringProviderNameLoop222 =
-                                                        q.ReferringProviderNameLoop222ForDeserialize.ToArray();
-                                                    q.ReferringProviderNameLoop222ForDeserialize = null;
+                                                    r.ClaimInformationLoop222 = r.ClaimInformationLoopForDeserialize.ToArray();
+                                                    r.ClaimInformationLoopForDeserialize = null;
                                                 }
-
-                                                if (q.OtherSubscriberInformationLoop222ForDeserialize != null)
+                                                
+                                                if (r.ClaimInformationLoop222 != null)
                                                 {
-                                                    q.OtherSubscriberInformationLoop222 =
-                                                        q.OtherSubscriberInformationLoop222ForDeserialize.ToArray();
-                                                    q.ReferringProviderNameLoop222ForDeserialize = null;
-                                                }
-
-                                                if (q.OtherSubscriberInformationLoop222 != null)
-                                                {
-                                                    foreach (var p in q.OtherSubscriberInformationLoop222)
+                                                    foreach (var q in r.ClaimInformationLoop222)
                                                     {
-                                                        if (p.OtherPayerReferringProviderLoop222ForDeserialize != null)
+                                                        if (q.ReferringProviderNameLoop222ForDeserialize != null)
                                                         {
-                                                            p.OtherPayerReferringProviderLoop222 =
-                                                                p.OtherPayerReferringProviderLoop222ForDeserialize
-                                                                    .ToArray();
-                                                            p.OtherPayerReferringProviderLoop222ForDeserialize = null;
+                                                            q.ReferringProviderNameLoop222 = q.ReferringProviderNameLoop222ForDeserialize.ToArray();
+                                                            q.ReferringProviderNameLoop222ForDeserialize = null;
                                                         }
-                                                    }
-                                                }
 
-                                                if (q.ServiceLineNumberLoop222ForDeserialize != null)
-                                                {
-                                                    q.ServiceLineNumberLoop222 =
-                                                        q.ServiceLineNumberLoop222ForDeserialize.ToArray();
-                                                    q.ServiceLineNumberLoop222ForDeserialize = null;
-
-                                                    if (q.ServiceLineNumberLoop222 != null)
-                                                    {
-                                                        foreach (var o in q.ServiceLineNumberLoop222)
+                                                        if (q.OtherSubscriberInformationLoop222ForDeserialize != null)
                                                         {
-                                                            if (o.ReferringProviderNameLoop222ForDeserialize != null)
-                                                            {
-                                                                o.ReferringProviderNameLoop222 =
-                                                                    o.ReferringProviderNameLoop222ForDeserialize
-                                                                        .ToArray();
-                                                                o.ReferringProviderNameLoop222ForDeserialize = null;
-                                                            }
+                                                            q.OtherSubscriberInformationLoop222 = q.OtherSubscriberInformationLoop222ForDeserialize.ToArray();
+                                                            q.OtherSubscriberInformationLoop222ForDeserialize = null;
+                                                        }
 
-                                                            if (o.LineAdjudicationInformationLoop222ForDeserialize != null)
+                                                        if (q.OtherSubscriberInformationLoop222 != null)
+                                                        {
+                                                            foreach (var p in q.OtherSubscriberInformationLoop222)
                                                             {
-                                                                o.LineAdjudicationInformationLoop222 =
-                                                                    o.LineAdjudicationInformationLoop222ForDeserialize
-                                                                        .ToArray();
-                                                                o.LineAdjudicationInformationLoop222ForDeserialize = null;
+                                                                if (p.OtherPayerReferringProviderLoop222ForDeserialize != null)
+                                                                {
+                                                                    p.OtherPayerReferringProviderLoop222 = p.OtherPayerReferringProviderLoop222ForDeserialize.ToArray();
+                                                                    p.OtherPayerReferringProviderLoop222ForDeserialize = null;
+                                                                }
                                                             }
+                                                        }
 
-                                                            if (o.FormIdentificationCodeLoop222ForDeserialize != null)
+                                                        if (q.ServiceLineNumberLoop222ForDeserialize != null)
+                                                        {
+                                                            q.ServiceLineNumberLoop222 = q.ServiceLineNumberLoop222ForDeserialize.ToArray();
+                                                            q.ServiceLineNumberLoop222ForDeserialize = null;
+
+                                                            if (q.ServiceLineNumberLoop222 != null)
                                                             {
-                                                                o.FormIdentificationCodeLoop222 =
-                                                                    o.FormIdentificationCodeLoop222ForDeserialize
-                                                                        .ToArray();
-                                                                o.FormIdentificationCodeLoop222ForDeserialize = null;
+                                                                foreach (var o in q.ServiceLineNumberLoop222)
+                                                                {
+                                                                    if (o.ReferringProviderNameLoop222ForDeserialize != null)
+                                                                    {
+                                                                        o.ReferringProviderNameLoop222 = o.ReferringProviderNameLoop222ForDeserialize.ToArray();
+                                                                        o.ReferringProviderNameLoop222ForDeserialize = null;
+                                                                    }
+
+                                                                    if (o.LineAdjudicationInformationLoop222ForDeserialize != null)
+                                                                    {
+                                                                        o.LineAdjudicationInformationLoop222 = o.LineAdjudicationInformationLoop222ForDeserialize.ToArray();
+                                                                        o.LineAdjudicationInformationLoop222ForDeserialize = null;
+                                                                    }
+
+                                                                    if (o.FormIdentificationCodeLoop222ForDeserialize != null)
+                                                                    {
+                                                                        o.FormIdentificationCodeLoop222 = o.FormIdentificationCodeLoop222ForDeserialize.ToArray();
+                                                                        o.FormIdentificationCodeLoop222ForDeserialize = null;
+                                                                    }
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -175,7 +163,7 @@ public class X12Steps837
                         }
                     }
                 }
-
+                
                 return result;
             }
         }
