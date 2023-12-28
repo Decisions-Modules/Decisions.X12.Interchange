@@ -10,14 +10,14 @@ namespace X12Interchange824;
 [AutoRegisterMethodsOnClass(true, "Data", "X12", "824")]
 public class X12Steps824 
 {
-     public static Interchange Deserialize824EDI(string ediString, bool inputIsPath = false)
+     public static Interchange Deserialize824(string Document824, bool inputIsPath = false)
     {
         // EDI string -> X12 Xml string
         var parser = new X12Parser(true);
         Decisions.X12.Parsing.Model.Interchange interchange;
 
         using (FileStream fs = inputIsPath
-                   ? new FileStream(ediString, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096,
+                   ? new FileStream(Document824, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096,
                        FileOptions.None)
                    : new FileStream(Path.GetTempFileName(), FileMode.Open, FileAccess.ReadWrite, FileShare.None,
                        4096, FileOptions.DeleteOnClose))
@@ -26,7 +26,7 @@ public class X12Steps824
             {
                 using (StreamWriter writer = new StreamWriter(fs, Encoding.UTF8, 4096, true))
                 {
-                    writer.Write(ediString);
+                    writer.Write(Document824);
                 }
 
                 fs.Position = 0;
@@ -72,21 +72,38 @@ public class X12Steps824
                     result.FunctionGroup.Transaction.OTILoop =
                         result.FunctionGroup.Transaction.OTILoopForDeserialize.ToArray();
                     result.FunctionGroup.Transaction.OTILoopForDeserialize = null;
-                }
 
-                if (result?.FunctionGroup?.Transaction?.OTILoop != null)
-                {
-                    for (int i = 0; i < result.FunctionGroup.Transaction.OTILoop.Length; i++)
+                    if (result.FunctionGroup.Transaction.OTILoop != null)
                     {
-                        if (result.FunctionGroup.Transaction.OTILoop[i].TEDLoopForDeserialize != null)
+                        foreach (var t in result.FunctionGroup.Transaction.OTILoop)
                         {
-                            result.FunctionGroup.Transaction.OTILoop[i].TEDLoop = result.FunctionGroup.Transaction
-                                .OTILoop[i].TEDLoopForDeserialize.ToArray();
-                            result.FunctionGroup.Transaction.OTILoop[i].TEDLoopForDeserialize = null;
+                            if (t.TEDLoopForDeserialize != null)
+                            {
+                                t.TEDLoop = t.TEDLoopForDeserialize.ToArray();
+                                t.TEDLoopForDeserialize = null;
+                            }
+
+                            if (t.LMLoopForDeserialize != null)
+                            {
+                                t.LMLoop = t.LMLoopForDeserialize.ToArray();
+                                t.LMLoopForDeserialize = null;
+
+                                if (t.LMLoop != null)
+                                {
+                                    foreach (var s in t.LMLoop)
+                                    {
+                                        if (s.LQLoopForDeserialize != null)
+                                        {
+                                            s.LQLoop = s.LQLoopForDeserialize.ToArray();
+                                            s.LQLoopForDeserialize = null;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
-                
+
                 return result;
             }
         }
@@ -139,6 +156,34 @@ public class X12Steps824
                         otiLoop.TEDLoopForDeserialize = new List<TEDLoop>();
                     
                     otiLoop.TEDLoopForDeserialize.Add(tedLoop);
+                }
+                break;
+                case "LM": // LMLoop
+                {
+                    OTILoop otiLoop = args?.ObjectBeingDeserialized as OTILoop;
+                    if (otiLoop == null)
+                        throw new InvalidOperationException("Expected LoopId LM to be LMLoop inside OTILoop");
+
+                    LMLoop lmLoop = GetLoopValue<LMLoop>(args.Element);
+                    
+                    if (otiLoop.LMLoopForDeserialize == null)
+                        otiLoop.LMLoopForDeserialize = new List<LMLoop>();
+                    
+                    otiLoop.LMLoopForDeserialize.Add(lmLoop);
+                }
+                break;
+                case "LQ": // LQLoop
+                {
+                    LMLoop lmLoop = args?.ObjectBeingDeserialized as LMLoop;
+                    if (lmLoop == null)
+                        throw new InvalidOperationException("Expected LoopId LQ to be LQLoop inside LMLoop");
+
+                    LQLoop lqLoop = GetLoopValue<LQLoop>(args.Element);
+
+                    if (lmLoop.LQLoopForDeserialize == null)
+                        lmLoop.LQLoopForDeserialize = new List<LQLoop>();
+                    
+                    lmLoop.LQLoopForDeserialize.Add(lqLoop);
                 }
                 break;
             }

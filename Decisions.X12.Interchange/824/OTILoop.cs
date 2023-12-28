@@ -37,6 +37,9 @@ public class OTILoop
     public NM1[] NM1 { get; set; }
     [DataMember, WritableValue, PropertyClassification("TED Loop", 80)]
     public TEDLoop[] TEDLoop { get; set; }
+    [DataMember, WritableValue, PropertyClassification("LM Loop", 90)]
+    public LMLoop[] LMLoop { get; set; }
 
     internal List<TEDLoop> TEDLoopForDeserialize;
+    internal List<LMLoop> LMLoopForDeserialize;
 }
