@@ -7,36 +7,26 @@ using DecisionsFramework.Design.Properties;
 namespace X12Interchange835;
 
 [DataContract, Writable]
-public class ServicePaymentInformationLoop
+public class ServicePaymentInformationLoop // 2110 Loop
 {
     [DataMember, WritableValue, PropertyClassification("Service Payment Information", 10)]
-    [XmlElement("SVC", Order = 1)]
-    public SVC[] SVC { get; set; }
+    public SVC SVC { get; set; }
     [DataMember, WritableValue, PropertyClassification("Service Date", 20)]
-    [XmlElement("DTM", Order = 2)]
+    [XmlElement("DTM")]
     public DTM[] DTM { get; set; }
     [DataMember, WritableValue, PropertyClassification("Service Adjustment", 30)]
-    [XmlElement("CAS", Order = 3)]
+    [XmlElement("CAS")]
     public CAS[] CAS { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Service Identification", 40)]
-    [XmlElement("REF", Order = 4)]
-    public REF[] REFServiceIdentification { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Control Number", 50)]
-    [XmlElement("REF", Order = 5)]
-    public REF REFControlNumber { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Provider Information", 60)]
-    [XmlElement("REF", Order = 6)]
-    public REF[] REFProviderInformation { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Policy Identification", 70)]
-    [XmlElement("REF", Order = 7)]
-    public REF[] REFPolicyIdentification { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Amount", 80)]
-    [XmlElement("AMT", Order = 8)]
+    [DataMember, WritableValue, PropertyClassification("Additional Identification", 40)]
+    [XmlElement("REF")]
+    public REF[] REF { get; set; }
+    [DataMember, WritableValue, PropertyClassification("Amount", 50)]
+    [XmlElement("AMT")]
     public AMT[] AMT { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Quantity", 90)]
-    [XmlElement("QTY", Order = 9)]
+    [DataMember, WritableValue, PropertyClassification("Quantity", 60)]
+    [XmlElement("QTY")]
     public QTY[] QTY { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Remark Codes", 100)]
-    [XmlElement("LQ", Order = 10)]
+    [DataMember, WritableValue, PropertyClassification("Remark Codes", 70)]
+    [XmlElement("LQ")]
     public LQ[] LQ { get; set; }
 }

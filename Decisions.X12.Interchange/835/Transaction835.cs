@@ -15,8 +15,11 @@ public class Transaction835
     public BPR BPR { get; set; }
     [DataMember, WritableValue, PropertyClassification("Reassociation Trace Number", 30)]
     public TRN TRN { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Receiver Identification", 50)]
-    public REF REF { get; set; }
+    [DataMember, WritableValue, PropertyClassification("Foreign Currency Information", 40)]
+    public CUR CUR { get; set; }
+    [DataMember, WritableValue, PropertyClassification("Identification", 50)]
+    [XmlElement("REF")]
+    public REF[] REF { get; set; }
     [DataMember, WritableValue, PropertyClassification("Production Date", 60)]
     public DTM DTM { get; set; }
     [DataMember, WritableValue, PropertyClassification("Payer Identification Loop", 70)]
@@ -25,8 +28,10 @@ public class Transaction835
     public PayeeIdentificationLoop PayeeIdentificationLoop { get; set; }// 1000B Loop
     [DataMember, WritableValue, PropertyClassification("Header Number Loop", 90)]
     public HeaderNumberLoop[] HeaderNumberLoop { get; set; } //2000 Loop
-    
-    [DataMember, WritableValue, PropertyClassification("Transaction Set Trailer", 100)]
+    [DataMember, WritableValue, PropertyClassification("Provider Adjustment", 100)]
+    [XmlElement("PLB")]
+    public PLB[] PLB { get; set; }
+    [DataMember, WritableValue, PropertyClassification("Transaction Set Trailer", 110)]
     public SE SE { get; set; }
 
     internal List<HeaderNumberLoop> HeaderNumberLoopForDeserialize;

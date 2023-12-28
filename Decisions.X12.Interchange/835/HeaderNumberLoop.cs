@@ -10,7 +10,11 @@ public class HeaderNumberLoop // 2000 Loop
 {
     [DataMember, WritableValue, PropertyClassification("Header Number", 10)]
     public LX LX { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Claim Payment Information Loop", 20)]
+    [DataMember, WritableValue, PropertyClassification("Provider Summary Information", 20)]
+    public TS3 TS3 { get; set; }
+    [DataMember, WritableValue, PropertyClassification("Provider Supplemental Summary Information", 30)]
+    public TS2 TS2 { get; set; }
+    [DataMember, WritableValue, PropertyClassification("Claim Payment Information Loop", 40)]
     public ClaimPaymentInformationLoop[] ClaimPaymentInformationLoop { get; set; } // 2100 Loop
 
     internal List<ClaimPaymentInformationLoop> ClaimPaymentInformationLoopForDeserialize;

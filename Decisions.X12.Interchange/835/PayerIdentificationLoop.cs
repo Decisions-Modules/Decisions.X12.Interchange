@@ -15,8 +15,11 @@ public class PayerIdentificationLoop // 1000A
     public N3 N3 { get; set; }
     [DataMember, WritableValue, PropertyClassification("City, State, Zip Code", 30)]
     public N4 N4 { get; set; }
+    [XmlElement("REF")]
+    [DataMember, WritableValue, PropertyClassification("Additional Payer Identification", 40)]
+    public REF[] REF { get; set; }
     [XmlElement("PER")]
-    [DataMember, WritableValue, PropertyClassification("Technical Contact Information", 40)]
+    [DataMember, WritableValue, PropertyClassification("Contact Information", 50)]
     public PER[] PER { get; set; }
     
 }

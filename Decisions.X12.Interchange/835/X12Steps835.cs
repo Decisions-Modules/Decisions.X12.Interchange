@@ -10,14 +10,14 @@ namespace X12Interchange835;
 [AutoRegisterMethodsOnClass(true, "Data", "X12", "835")]
 public class X12Steps835
 {
-    public static Interchange Deserialize835EDI(string ediString, bool inputIsPath = false)
+    public static Interchange Deserialize835EDI(string Document835, bool inputIsPath = false)
     {
         // EDI string -> X12 Xml string
         var parser = new X12Parser(true);
         Decisions.X12.Parsing.Model.Interchange interchange;
 
         using (FileStream fs = inputIsPath
-                   ? new FileStream(ediString, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096,
+                   ? new FileStream(Document835, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096,
                        FileOptions.None)
                    : new FileStream(Path.GetTempFileName(), FileMode.Open, FileAccess.ReadWrite, FileShare.None,
                        4096, FileOptions.DeleteOnClose))
@@ -26,7 +26,7 @@ public class X12Steps835
             {
                 using (StreamWriter writer = new StreamWriter(fs, Encoding.UTF8, 4096, true))
                 {
-                    writer.Write(ediString);
+                    writer.Write(Document835);
                 }
 
                 fs.Position = 0;
@@ -66,25 +66,22 @@ public class X12Steps835
                         .HeaderNumberLoopForDeserialize.ToArray();
                     result.FunctionGroup.Transaction.HeaderNumberLoopForDeserialize = null;
                     
-                    foreach (var t in result?.FunctionGroup?.Transaction?.HeaderNumberLoop)
+                    foreach (var t in result.FunctionGroup.Transaction.HeaderNumberLoop)
                     {
                         if (t.ClaimPaymentInformationLoopForDeserialize != null)
                         {
-                            t.ClaimPaymentInformationLoop = t.ClaimPaymentInformationLoopForDeserialize
-                                .ToArray();
-
-                            t
-                                .ClaimPaymentInformationLoopForDeserialize = null;
-                        }
-
-                        if (t.ClaimPaymentInformationLoop != null)
-                        {
-                            foreach (var s in t.ClaimPaymentInformationLoop)
+                            t.ClaimPaymentInformationLoop = t.ClaimPaymentInformationLoopForDeserialize.ToArray();
+                            t.ClaimPaymentInformationLoopForDeserialize = null;
+                            
+                            if (t.ClaimPaymentInformationLoop != null)
                             {
-                                if (s.ServicePaymentInformationLoopForDeserialize != null)
+                                foreach (var s in t.ClaimPaymentInformationLoop)
                                 {
-                                    s.ServicePaymentInformationLoop = s.ServicePaymentInformationLoop.ToArray();
-                                    s.ServicePaymentInformationLoopForDeserialize = null;
+                                    if (s.ServicePaymentInformationLoopForDeserialize != null)
+                                    {
+                                        s.ServicePaymentInformationLoop = s.ServicePaymentInformationLoopForDeserialize.ToArray();
+                                        s.ServicePaymentInformationLoopForDeserialize = null;
+                                    }
                                 }
                             }
                         }
@@ -107,7 +104,7 @@ public class X12Steps835
                 {
                     Transaction835 transaction = args?.ObjectBeingDeserialized as Transaction835;
                     if(transaction == null)
-                        throw new InvalidOperationException("Expected LoopId 1000A to be inside Transaction");
+                        throw new InvalidOperationException("Expected LoopId 1000A to be PayerIdentificationLoop inside Transaction");
                     
                     PayerIdentificationLoop loop = GetLoopValue<PayerIdentificationLoop>(args.Element);
 
@@ -118,7 +115,7 @@ public class X12Steps835
                 {
                     Transaction835 transaction = args?.ObjectBeingDeserialized as Transaction835;
                     if(transaction == null)
-                        throw new InvalidOperationException("Expected LoopId 1000B to be inside Transaction");
+                        throw new InvalidOperationException("Expected LoopId 1000B to be PayeeIdentificationLoop inside Transaction");
                     
                     PayeeIdentificationLoop loop = GetLoopValue<PayeeIdentificationLoop>(args.Element);
 
@@ -129,7 +126,7 @@ public class X12Steps835
                 {
                     Transaction835 transaction = args?.ObjectBeingDeserialized as Transaction835;
                     if (transaction == null)
-                        throw new InvalidOperationException("Expected LoopId 1000 to be inside Transaction");
+                        throw new InvalidOperationException("Expected LoopId 1000 to be HeaderNumberLoop inside Transaction");
                     HeaderNumberLoop loop = GetLoopValue<HeaderNumberLoop>(args.Element);
 
                     if (transaction.HeaderNumberLoopForDeserialize == null)
@@ -142,7 +139,7 @@ public class X12Steps835
                 {
                     HeaderNumberLoop headerNumber = args?.ObjectBeingDeserialized as HeaderNumberLoop;
                     if (headerNumber == null)
-                        throw new InvalidOperationException("Expected LoopId 2100 to be inside HeaderNumberLoop");
+                        throw new InvalidOperationException("Expected LoopId 2100 to be ClaimPaymentInformationLoop inside HeaderNumberLoop");
                     
                     ClaimPaymentInformationLoop loop = GetLoopValue<ClaimPaymentInformationLoop>(args.Element);
 
@@ -156,7 +153,7 @@ public class X12Steps835
                 {
                     ClaimPaymentInformationLoop claimPaymentInformationLoop = args?.ObjectBeingDeserialized as ClaimPaymentInformationLoop;
                     if(claimPaymentInformationLoop == null)
-                        throw new InvalidOperationException("Expected LoopId 2110 to be inside ClaimPaymentInformationLoop");
+                        throw new InvalidOperationException("Expected LoopId 2110 to be ServicePaymentInformationLoop inside ClaimPaymentInformationLoop");
 
                     ServicePaymentInformationLoop loop = GetLoopValue<ServicePaymentInformationLoop>(args.Element);
 
