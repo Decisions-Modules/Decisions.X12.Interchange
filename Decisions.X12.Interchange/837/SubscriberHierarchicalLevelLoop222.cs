@@ -22,6 +22,12 @@ public class SubscriberHierarchicalLevelLoop222 // 2000B Loop
     //2010BB Loop
     [DataMember, WritableValue, PropertyClassification("Payer Name Loop", 50)]
     public PayerNameLoop222 PayerNameLoop222 { get; set; }
+    
+    // 2300 Loop
+    [DataMember, WritableValue, PropertyClassification("Claim Information Loop", 40)]
+    public ClaimInformationLoop222[] ClaimInformationLoop222 { get; set; }
+    
+    internal List<ClaimInformationLoop222> ClaimInformationLoopForDeserialize;
 
     //2000C Loop
     [DataMember, WritableValue, PropertyClassification("Patient Hierarchical Loop", 60)]

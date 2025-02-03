@@ -14,57 +14,59 @@ public class ClaimInformationLoop222 // 2300 Loop
     [DataMember, WritableValue, PropertyClassification("Dates", 20)]
     [XmlElement("DTP")]
     public DTP[] DTP { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Claim Supplemental Information", 30)]
+    [DataMember, WritableValue, PropertyClassification("Claim Codes", 30)]
+    public CL1 CL1 { get; set; }
+    [DataMember, WritableValue, PropertyClassification("Claim Supplemental Information", 40)]
     [XmlElement("PWK")]
     public PWK[] PWK { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Contract Information", 40)]
+    [DataMember, WritableValue, PropertyClassification("Contract Information", 50)]
     public CN1 CN1 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Patient Amount Paid", 50)]
+    [DataMember, WritableValue, PropertyClassification("Patient Amount Paid", 60)]
     public AMT AMT { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Additional Information", 60)]
+    [DataMember, WritableValue, PropertyClassification("Additional Information", 70)]
     [XmlElement("REF")]
     public REF[] REF { get; set; }
-    [DataMember, WritableValue, PropertyClassification("File Information", 70)]
+    [DataMember, WritableValue, PropertyClassification("File Information", 80)]
     [XmlElement("K3")]
     public K3[] K3 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Claim Note", 80)]
+    [DataMember, WritableValue, PropertyClassification("Claim Note", 90)]
     public NTE NTE { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Ambulance Transport Information", 90)]
+    [DataMember, WritableValue, PropertyClassification("Ambulance Transport Information", 100)]
     public CR1 CR1 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Spinal Manipulation Service Information", 100)]
+    [DataMember, WritableValue, PropertyClassification("Spinal Manipulation Service Information", 110)]
     public CR2 CR2 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Conditions Indicator", 110)]
+    [DataMember, WritableValue, PropertyClassification("Conditions Indicator", 120)]
     [XmlElement("CRC")]
     public CRC[] CRC { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Health Care Diagnosis", 120)]
+    [DataMember, WritableValue, PropertyClassification("Health Care Diagnosis", 130)]
     [XmlElement("HI")]
     public HI[] HI { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Claim Pricing/Repricing Information", 130)]
+    [DataMember, WritableValue, PropertyClassification("Claim Pricing/Repricing Information", 140)]
     public HCP HCP { get; set; }
     
     // 2310A Loop
-    [DataMember, WritableValue, PropertyClassification("Referring Provider Name Loop", 140)]
+    [DataMember, WritableValue, PropertyClassification("Referring Provider Name Loop", 150)]
     public ReferringProviderNameLoop222[] ReferringProviderNameLoop222 { get; set; }
     // 2310B Loop
-    [DataMember, WritableValue, PropertyClassification("Rendering Provider Name Loop", 150)]
+    [DataMember, WritableValue, PropertyClassification("Rendering Provider Name Loop", 160)]
     public RenderingProviderNameLoop222 RenderingProviderNameLoop222 { get; set; }
     // 2310C Loop
-    [DataMember, WritableValue, PropertyClassification("Service Facility Location Name Loop", 160)]
+    [DataMember, WritableValue, PropertyClassification("Service Facility Location Name Loop", 170)]
     public ServiceFacilityLocationNameLoop222 ServiceFacilityLocationNameLoop222 { get; set; }
     // 2310D Loop
-    [DataMember, WritableValue, PropertyClassification("Supervising Provider Name Loop", 170)]
+    [DataMember, WritableValue, PropertyClassification("Supervising Provider Name Loop", 180)]
     public SupervisingProviderNameLoop222 SupervisingProviderNameLoop222 { get; set; }
     // 2310E Loop
-    [DataMember, WritableValue, PropertyClassification("Ambulance Pickup Location Loop", 180)]
+    [DataMember, WritableValue, PropertyClassification("Ambulance Pickup Location Loop", 190)]
     public AmbulancePickupLocationLoop222 AmbulancePickupLocationLoop222 { get; set; }
     // 2310F Loop
-    [DataMember, WritableValue, PropertyClassification("Ambulance Dropoff Location Loop", 190)]
+    [DataMember, WritableValue, PropertyClassification("Ambulance Dropoff Location Loop", 200)]
     public AmbulanceDropoffLocationLoop222 AmbulanceDropoffLocationLoop222 { get; set; }
     // 2320 Loop
-    [DataMember, WritableValue, PropertyClassification("Other Subscriber Information Loop", 200)]
+    [DataMember, WritableValue, PropertyClassification("Other Subscriber Information Loop", 210)]
     public OtherSubscriberInformationLoop222[] OtherSubscriberInformationLoop222 { get; set; }
     // 2400 Loop
-    [DataMember, WritableValue, PropertyClassification("Service Line Number Loop", 210)]
+    [DataMember, WritableValue, PropertyClassification("Service Line Number Loop", 220)]
     public ServiceLineNumberLoop222[] ServiceLineNumberLoop222 { get; set; }
 
     internal List<ReferringProviderNameLoop222> ReferringProviderNameLoop222ForDeserialize;
