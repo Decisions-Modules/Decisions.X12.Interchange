@@ -67,7 +67,7 @@ public class X12Steps837
     
     private static void ValidateInterchange(Interchange result)
     {
-        if (result?.FunctionGroup?.Transaction?.ST.ST01 != "837")
+        if (result?.FunctionGroup?.Transactions.Any(t => t.ST.ST01 != "837") ?? true)
             throw new InvalidOperationException("Incorrect document being used. Please use 837");
     }
     

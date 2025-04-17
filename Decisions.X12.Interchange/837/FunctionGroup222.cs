@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.Xml.Serialization;
 using Decisions.X12.Interchange.Segments;
 using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
@@ -10,8 +11,17 @@ public class FunctionGroup222
 {
     [DataMember, WritableValue, PropertyClassification("Functional Group Header", 10)]
     public GS GS { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Transaction", 20)]
-    public Transaction222 Transaction { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Functional Group Trailer", 30)]
+
+    [XmlIgnore, DataMember, WritableValue, PropertyClassification("Transaction", 20)]
+    public Transaction222 Transaction
+    {
+        get => Transactions?.FirstOrDefault();
+        set { } 
+    }
+    
+    [XmlElement("Transaction"), DataMember, WritableValue, PropertyClassification("Transactions", 30)]
+    public List<Transaction222> Transactions { get; set; }
+    
+    [DataMember, WritableValue, PropertyClassification("Functional Group Trailer", 40)]
     public GE GE { get; set; }
 }
