@@ -13,7 +13,7 @@ public class X12Steps999
     public static Interchange Deserialize999(string Document999, bool inputIsPath = false)
     {
         // EDI string -> X12 Xml string -> Interchange
-        var parser = new X12Parser(true);
+        X12Parser parser = new X12Parser(true);
         Decisions.X12.Parsing.Model.Interchange interchange;
 
         using (FileStream fs = inputIsPath
@@ -44,14 +44,14 @@ public class X12Steps999
             // Prepare to read what we just wrote:
             fs.Position = 0;
             // Ignore ISA16 so the XmlSerializer doesn't throw an error when it sees an object instead of a string:
-            var overrides = new XmlAttributeOverrides();
+            XmlAttributeOverrides overrides = new XmlAttributeOverrides();
             overrides.Add(typeof(ISA), nameof(ISA.ISA16), new XmlAttributes { XmlIgnore = true });
-            var serializer = new XmlSerializer(typeof(Interchange), overrides);
+            XmlSerializer serializer = new XmlSerializer(typeof(Interchange), overrides);
 
             using (XmlReader xmlReader = XmlReader.Create(fs,
                        new XmlReaderSettings { IgnoreComments = true, CheckCharacters = false }))
             {
-                Interchange result = (Interchange)serializer.Deserialize(xmlReader,
+                Interchange? result = (Interchange)serializer.Deserialize(xmlReader,
                     new XmlDeserializationEvents
                     {
                         OnUnknownElement = HandleUnknownElement
@@ -67,31 +67,23 @@ public class X12Steps999
                     result.FunctionGroup.Transaction.TransactionSetResponseHeaderLoop2000ForDeserialize = null;
 
                     if (result.FunctionGroup.Transaction.TransactionSetResponseHeaderLoop2000 != null)
-                    {
-                        foreach (var t in result.FunctionGroup.Transaction.TransactionSetResponseHeaderLoop2000)
-                        {
+                        foreach (TransactionSetResponseHeaderLoop2000 t in result.FunctionGroup.Transaction.TransactionSetResponseHeaderLoop2000)
                             if (t.ErrorIdentificationLoop2100ForDeserialize != null)
                             {
                                 t.ErrorIdentificationLoop2100 = t.ErrorIdentificationLoop2100ForDeserialize.ToArray();
                                 t.ErrorIdentificationLoop2100ForDeserialize = null;
 
                                 if (t.ErrorIdentificationLoop2100 != null)
-                                {
-                                    foreach (var s in t.ErrorIdentificationLoop2100)
-                                    {
+                                    foreach (ErrorIdentificationLoop2100 s in t.ErrorIdentificationLoop2100)
                                         if (s.ImplementationDataElementNoteLoop2110ForDeserialize != null)
                                         {
                                             s.ImplementationDataElementNoteLoop2110 =
                                                 s.ImplementationDataElementNoteLoop2110ForDeserialize.ToArray();
                                             s.ImplementationDataElementNoteLoop2110ForDeserialize = null;
                                         }
-                                    }
-                                }
                             }
-                        }
-                    }
                 }
-                
+
                 return result;
             }
         }
@@ -101,14 +93,15 @@ public class X12Steps999
     {
         if ((bool)!args?.Element?.Name?.Contains("Loop"))
             return;
-        
+
         switch (args?.Element?.Attributes?["LoopId"]?.Value)
         {
             case "2000": // TransactionSetResponseHeaderLoop
             {
-                Transaction999 transaction = args?.ObjectBeingDeserialized as Transaction999;
-                if(transaction == null)
-                    throw new InvalidOperationException("Expected LoopId 2000 to be TransactionSetResponseHeaderLoop inside Transaction");
+                Transaction999? transaction = args?.ObjectBeingDeserialized as Transaction999;
+                if (transaction == null)
+                    throw new InvalidOperationException(
+                        "Expected LoopId 2000 to be TransactionSetResponseHeaderLoop inside Transaction");
 
                 TransactionSetResponseHeaderLoop2000 loop =
                     GetLoopValue<TransactionSetResponseHeaderLoop2000>(args.Element);
@@ -116,15 +109,16 @@ public class X12Steps999
                 if (transaction.TransactionSetResponseHeaderLoop2000ForDeserialize == null)
                     transaction.TransactionSetResponseHeaderLoop2000ForDeserialize =
                         new List<TransactionSetResponseHeaderLoop2000>();
-                
+
                 transaction.TransactionSetResponseHeaderLoop2000ForDeserialize.Add(loop);
             }
-            break;
+                break;
             case "2100": // ErrorIdentificationLoop
             {
-                TransactionSetResponseHeaderLoop2000 headerLoop2000 = args?.ObjectBeingDeserialized as TransactionSetResponseHeaderLoop2000;
-                if(headerLoop2000 == null)
-                    throw new InvalidOperationException("Expected LoopId 2100 to be ErrorIdentificationLoop inside TransactionSetResponseHeaderLoop");
+                TransactionSetResponseHeaderLoop2000? headerLoop2000 = args?.ObjectBeingDeserialized as TransactionSetResponseHeaderLoop2000;
+                if (headerLoop2000 == null)
+                    throw new InvalidOperationException(
+                        "Expected LoopId 2100 to be ErrorIdentificationLoop inside TransactionSetResponseHeaderLoop");
 
                 ErrorIdentificationLoop2100 loop =
                     GetLoopValue<ErrorIdentificationLoop2100>(args.Element);
@@ -132,15 +126,16 @@ public class X12Steps999
                 if (headerLoop2000.ErrorIdentificationLoop2100ForDeserialize == null)
                     headerLoop2000.ErrorIdentificationLoop2100ForDeserialize =
                         new List<ErrorIdentificationLoop2100>();
-                
+
                 headerLoop2000.ErrorIdentificationLoop2100ForDeserialize.Add(loop);
             }
-            break;
+                break;
             case "2110": // ImplementationDataElementNoteLoop
             {
-                ErrorIdentificationLoop2100 identificationLoop2000 = args?.ObjectBeingDeserialized as ErrorIdentificationLoop2100;
-                if(identificationLoop2000 == null)
-                    throw new InvalidOperationException("Expected LoopId 2110 to be ImplementationDataElementNoteLoop inside ErrorIdentificationLoop");
+                ErrorIdentificationLoop2100? identificationLoop2000 = args?.ObjectBeingDeserialized as ErrorIdentificationLoop2100;
+                if (identificationLoop2000 == null)
+                    throw new InvalidOperationException(
+                        "Expected LoopId 2110 to be ImplementationDataElementNoteLoop inside ErrorIdentificationLoop");
 
                 ImplementationDataElementNoteLoop2110 loop =
                     GetLoopValue<ImplementationDataElementNoteLoop2110>(args.Element);
@@ -148,20 +143,21 @@ public class X12Steps999
                 if (identificationLoop2000.ImplementationDataElementNoteLoop2110ForDeserialize == null)
                     identificationLoop2000.ImplementationDataElementNoteLoop2110ForDeserialize =
                         new List<ImplementationDataElementNoteLoop2110>();
-                
+
                 identificationLoop2000.ImplementationDataElementNoteLoop2110ForDeserialize.Add(loop);
             }
-            break;
+                break;
         }
     }
-    
+
     private static TLoop GetLoopValue<TLoop>(XmlElement element)
     {
         using (StringReader stringReader = new StringReader(element.OuterXml))
-        using (XmlReader xmlReader = XmlReader.Create(stringReader, new XmlReaderSettings { IgnoreComments = true, CheckCharacters = false }))
+        using (XmlReader xmlReader = XmlReader.Create(stringReader,
+                   new XmlReaderSettings { IgnoreComments = true, CheckCharacters = false }))
         {
             XmlSerializer ser = new XmlSerializer(typeof(TLoop), new XmlRootAttribute(element.Name));
-            TLoop loop = (TLoop)ser.Deserialize(xmlReader, new XmlDeserializationEvents
+            TLoop? loop = (TLoop)ser.Deserialize(xmlReader, new XmlDeserializationEvents
             {
                 OnUnknownElement = HandleUnknownElement
             });

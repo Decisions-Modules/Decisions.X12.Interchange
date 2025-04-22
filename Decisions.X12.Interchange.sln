@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Decisions.X12.Validation", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Decisions.X12.Interchange", "Decisions.X12.Interchange\Decisions.X12.Interchange.csproj", "{A9B94992-30CB-4317-85AA-F803A05834CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Decisions.X12.Tests", "Decisions.X12.Tests\Decisions.X12.Tests.csproj", "{510300E4-8B63-42C0-BC98-DC5B099E7283}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{A9B94992-30CB-4317-85AA-F803A05834CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9B94992-30CB-4317-85AA-F803A05834CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9B94992-30CB-4317-85AA-F803A05834CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{510300E4-8B63-42C0-BC98-DC5B099E7283}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{510300E4-8B63-42C0-BC98-DC5B099E7283}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{510300E4-8B63-42C0-BC98-DC5B099E7283}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{510300E4-8B63-42C0-BC98-DC5B099E7283}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

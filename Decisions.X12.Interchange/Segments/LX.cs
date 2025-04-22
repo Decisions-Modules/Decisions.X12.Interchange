@@ -1,12 +1,17 @@
 ﻿using System.Runtime.Serialization;
+using Decisions.X12.Attributes;
 using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
 
 namespace Decisions.X12.Interchange.Segments;
 
-[DataContract, Writable]
+[DataContract]
+[Writable]
 public class LX
 {
-    [DataMember, WritableValue, PropertyClassification("Assigned Number", 10)]
+    [EdiElement(0)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Assigned Number", 10)]
     public string LX01 { get; set; }
 }

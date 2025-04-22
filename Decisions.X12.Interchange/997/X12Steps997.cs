@@ -13,7 +13,7 @@ public class X12Steps997
     public static Interchange Deserialize997(string Document997, bool inputIsPath = false)
     {
         // EDI string -> X12 Xml string -> Interchange
-        var parser = new X12Parser(true);
+        X12Parser parser = new X12Parser(true);
         Decisions.X12.Parsing.Model.Interchange interchange;
 
         using (FileStream fs = inputIsPath
@@ -44,20 +44,20 @@ public class X12Steps997
             // Prepare to read what we just wrote:
             fs.Position = 0;
             // Ignore ISA16 so the XmlSerializer doesn't throw an error when it sees an object instead of a string:
-            var overrides = new XmlAttributeOverrides();
+            XmlAttributeOverrides overrides = new XmlAttributeOverrides();
             overrides.Add(typeof(ISA), nameof(ISA.ISA16), new XmlAttributes { XmlIgnore = true });
-            var serializer = new XmlSerializer(typeof(Interchange), overrides);
+            XmlSerializer serializer = new XmlSerializer(typeof(Interchange), overrides);
 
             using (XmlReader xmlReader = XmlReader.Create(fs,
                        new XmlReaderSettings { IgnoreComments = true, CheckCharacters = false }))
             {
-                Interchange result = (Interchange)serializer.Deserialize(xmlReader,
+                Interchange? result = (Interchange)serializer.Deserialize(xmlReader,
                     new XmlDeserializationEvents
                     {
                         OnUnknownElement = HandleUnknownElement
                     });
 
-                if (result?.FunctionGroup?.Transaction?.ST?.ST01 != "997")
+                if (result?.FunctionGroup.Transactions.Any(t => t.ST.ST01 != "997") ?? true)
                     throw new InvalidOperationException("Incorrect document being used.  Please use 997");
 
                 if (result?.FunctionGroup?.Transaction?.TransactionSetResponseHeaderLoop2000ForDeserialize != null)
@@ -67,35 +67,32 @@ public class X12Steps997
                     result.FunctionGroup.Transaction.TransactionSetResponseHeaderLoop2000ForDeserialize = null;
 
                     if (result.FunctionGroup.Transaction.TransactionSetResponseHeaderLoop2000 != null)
-                    {
-                        foreach (var t in result.FunctionGroup.Transaction.TransactionSetResponseHeaderLoop2000)
-                        {
+                        foreach (TransactionSetResponseHeaderLoop2000 t in result.FunctionGroup.Transaction.TransactionSetResponseHeaderLoop2000)
                             if (t.DataSegmentLoop2100ForDeserialize != null)
                             {
                                 t.DataSegmentLoop2100 = t.DataSegmentLoop2100ForDeserialize.ToArray();
                                 t.DataSegmentLoop2100ForDeserialize = null;
                             }
-                        }
-                    }
                 }
-                
+
                 return result;
             }
         }
     }
-    
+
     private static void HandleUnknownElement(object obj, XmlElementEventArgs args)
     {
         if ((bool)!args?.Element?.Name?.Contains("Loop"))
             return;
-        
+
         switch (args?.Element?.Attributes?["LoopId"]?.Value)
         {
             case "2000": // TransactionSetResponseHeaderLoop
             {
-                Transaction997 transaction = args?.ObjectBeingDeserialized as Transaction997;
-                if(transaction == null)
-                    throw new InvalidOperationException("Expected LoopId 2000 to be TransactionSetResponseHeaderLoop inside Transaction");
+                Transaction997? transaction = args?.ObjectBeingDeserialized as Transaction997;
+                if (transaction == null)
+                    throw new InvalidOperationException(
+                        "Expected LoopId 2000 to be TransactionSetResponseHeaderLoop inside Transaction");
 
                 TransactionSetResponseHeaderLoop2000 loop =
                     GetLoopValue<TransactionSetResponseHeaderLoop2000>(args.Element);
@@ -103,15 +100,16 @@ public class X12Steps997
                 if (transaction.TransactionSetResponseHeaderLoop2000ForDeserialize == null)
                     transaction.TransactionSetResponseHeaderLoop2000ForDeserialize =
                         new List<TransactionSetResponseHeaderLoop2000>();
-                
+
                 transaction.TransactionSetResponseHeaderLoop2000ForDeserialize.Add(loop);
             }
-            break;
+                break;
             case "2100": // ErrorIdentificationLoop
             {
-                TransactionSetResponseHeaderLoop2000 headerLoop2000 = args?.ObjectBeingDeserialized as TransactionSetResponseHeaderLoop2000;
-                if(headerLoop2000 == null)
-                    throw new InvalidOperationException("Expected LoopId 2100 to be ErrorIdentificationLoop inside TransactionSetResponseHeaderLoop");
+                TransactionSetResponseHeaderLoop2000? headerLoop2000 = args?.ObjectBeingDeserialized as TransactionSetResponseHeaderLoop2000;
+                if (headerLoop2000 == null)
+                    throw new InvalidOperationException(
+                        "Expected LoopId 2100 to be ErrorIdentificationLoop inside TransactionSetResponseHeaderLoop");
 
                 DataSegmentLoop2100 loop =
                     GetLoopValue<DataSegmentLoop2100>(args.Element);
@@ -119,20 +117,21 @@ public class X12Steps997
                 if (headerLoop2000.DataSegmentLoop2100ForDeserialize == null)
                     headerLoop2000.DataSegmentLoop2100ForDeserialize =
                         new List<DataSegmentLoop2100>();
-                
+
                 headerLoop2000.DataSegmentLoop2100ForDeserialize.Add(loop);
             }
-            break;
+                break;
         }
     }
-    
+
     private static TLoop GetLoopValue<TLoop>(XmlElement element)
     {
         using (StringReader stringReader = new StringReader(element.OuterXml))
-        using (XmlReader xmlReader = XmlReader.Create(stringReader, new XmlReaderSettings { IgnoreComments = true, CheckCharacters = false }))
+        using (XmlReader xmlReader = XmlReader.Create(stringReader,
+                   new XmlReaderSettings { IgnoreComments = true, CheckCharacters = false }))
         {
             XmlSerializer ser = new XmlSerializer(typeof(TLoop), new XmlRootAttribute(element.Name));
-            TLoop loop = (TLoop)ser.Deserialize(xmlReader, new XmlDeserializationEvents
+            TLoop? loop = (TLoop)ser.Deserialize(xmlReader, new XmlDeserializationEvents
             {
                 OnUnknownElement = HandleUnknownElement
             });

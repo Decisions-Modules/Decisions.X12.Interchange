@@ -1,24 +1,54 @@
 ﻿using System.Runtime.Serialization;
+using Decisions.X12.Attributes;
 using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
 
 namespace Decisions.X12.Interchange.Segments;
 
-[DataContract, Writable]
+[EdiSegment(nameof(CRC))]
+[DataContract]
+[Writable]
 public class CRC
 {
-    [DataMember, WritableValue, PropertyClassification("Code Category", 10)]
+    [EdiElement(0)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Code Category", 10)]
     public string CRC01 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Response Code", 20)]
+
+    [EdiElement(1)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Response Code", 20)]
     public string CRC02 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Condition Indicator", 30)]
+
+    [EdiElement(2)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Condition Indicator", 30)]
     public string CRC03 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Condition Indicator", 40)]
+
+    [EdiElement(3)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Condition Indicator", 40)]
     public string CRC04 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Condition Indicator", 50)]
+
+    [EdiElement(4)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Condition Indicator", 50)]
     public string CRC05 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Condition Indicator", 60)]
+
+    [EdiElement(5)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Condition Indicator", 60)]
     public string CRC06 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Condition Indicator", 70)]
+
+    [EdiElement(6)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Condition Indicator", 70)]
     public string CRC07 { get; set; }
 }

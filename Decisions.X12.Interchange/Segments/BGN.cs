@@ -1,26 +1,60 @@
-﻿using DecisionsFramework.Design.ConfigurationStorage.Attributes;
+﻿using System.Runtime.Serialization;
+using Decisions.X12.Attributes;
+using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
-using System.Runtime.Serialization;
 
 namespace Decisions.X12.Interchange.Segments;
 
-[DataContract, Writable]
+[EdiSegment(nameof(BGN))]
+[DataContract]
+[Writable]
 public class BGN
 {
-    [DataMember, WritableValue, PropertyClassification("Transaction Set Purpose Code", 10)]
+    [EdiElement(0)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Transaction Set Purpose Code", 10)]
     public string BGN01 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Reference Identification", 20)]
+
+    [EdiElement(1)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Reference Identification", 20)]
     public string BGN02 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Date", 30)]
+
+    [EdiElement(2)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Date", 30)]
     public string BGN03 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Time", 40)]
+
+    [EdiElement(3)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Time", 40)]
     public string BGN04 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("BGN05", 50)]
+
+    [EdiElement(4)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("BGN05", 50)]
     public string BGN05 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("BGN06", 60)]
+
+    [EdiElement(5)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("BGN06", 60)]
     public string BGN06 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("BGN07", 70)]
+
+    [EdiElement(6)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("BGN07", 70)]
     public string BGN07 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Action Code", 80)]
+
+    [EdiElement(7)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Action Code", 80)]
     public string BGN08 { get; set; }
 }

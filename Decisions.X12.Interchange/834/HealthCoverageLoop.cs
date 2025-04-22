@@ -1,17 +1,30 @@
-﻿using DecisionsFramework.Design.ConfigurationStorage.Attributes;
-using DecisionsFramework.Design.Properties;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
+using Decisions.X12.Attributes;
 using Decisions.X12.Interchange.Segments;
+using DecisionsFramework.Design.ConfigurationStorage.Attributes;
+using DecisionsFramework.Design.Properties;
 
 namespace X12Interchange834;
 
-[DataContract, Writable]
+[DataContract]
+[Writable]
 public class HealthCoverageLoop
 {
-    [DataMember, WritableValue, PropertyClassification("Health Coverage", 10)]
+    [EdiElement(0)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Health Coverage", 10)]
     public HD HD { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Health Coverage Dates", 20)]
+
+    [EdiElement(1)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Health Coverage Dates", 20)]
     public DTP DTP { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Health Coverage Policy Number", 30)]
+
+    [EdiElement(2)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Health Coverage Policy Number", 30)]
     public REF REF { get; set; }
 }

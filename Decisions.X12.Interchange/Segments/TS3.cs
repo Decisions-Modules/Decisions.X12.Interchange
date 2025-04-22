@@ -1,58 +1,156 @@
 ﻿using System.Runtime.Serialization;
+using Decisions.X12.Attributes;
 using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
 
 namespace Decisions.X12.Interchange.Segments;
 
-[DataContract, Writable]
+[EdiSegment(nameof(TS3))]
+[DataContract]
+[Writable]
 public class TS3
 {
-    [DataMember, WritableValue, PropertyClassification("Reference Identification", 10)]
+    [EdiElement(0)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Reference Identification", 10)]
     public string TS301 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Facility Code Value", 20)]
+
+    [EdiElement(1)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Facility Code Value", 20)]
     public string TS302 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Date", 30)]
+
+    [EdiElement(2)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Date", 30)]
     public string TS303 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Quantity", 40)]
+
+    [EdiElement(3)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Quantity", 40)]
     public string TS304 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Monetary Amount", 50)]
+
+    [EdiElement(4)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Monetary Amount", 50)]
     public string TS305 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Monetary Amount", 60)]
+
+    [EdiElement(5)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Monetary Amount", 60)]
     public string TS306 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Monetary Amount", 70)]
+
+    [EdiElement(6)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Monetary Amount", 70)]
     public string TS307 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Monetary Amount", 80)]
+
+    [EdiElement(7)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Monetary Amount", 80)]
     public string TS308 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Monetary Amount", 90)]
+
+    [EdiElement(8)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Monetary Amount", 90)]
     public string TS309 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Monetary Amount", 100)]
+
+    [EdiElement(9)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Monetary Amount", 100)]
     public string TS310 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Monetary Amount", 110)]
+
+    [EdiElement(10)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Monetary Amount", 110)]
     public string TS311 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Monetary Amount", 120)]
+
+    [EdiElement(11)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Monetary Amount", 120)]
     public string TS312 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Monetary Amount", 130)]
+
+    [EdiElement(12)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Monetary Amount", 130)]
     public string TS313 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Monetary Amount", 140)]
+
+    [EdiElement(13)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Monetary Amount", 140)]
     public string TS314 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Monetary Amount", 150)]
+
+    [EdiElement(14)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Monetary Amount", 150)]
     public string TS315 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Monetary Amount", 160)]
+
+    [EdiElement(15)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Monetary Amount", 160)]
     public string TS316 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Monetary Amount", 170)]
+
+    [EdiElement(16)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Monetary Amount", 170)]
     public string TS317 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Monetary Amount", 180)]
+
+    [EdiElement(17)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Monetary Amount", 180)]
     public string TS318 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Monetary Amount", 190)]
+
+    [EdiElement(18)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Monetary Amount", 190)]
     public string TS319 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Monetary Amount", 200)]
+
+    [EdiElement(19)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Monetary Amount", 200)]
     public string TS320 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Monetary Amount", 210)]
+
+    [EdiElement(20)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Monetary Amount", 210)]
     public string TS321 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Monetary Amount", 220)]
+
+    [EdiElement(21)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Monetary Amount", 220)]
     public string TS322 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Quantity", 230)]
+
+    [EdiElement(22)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Quantity", 230)]
     public string TS323 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Monetary Amount", 240)]
+
+    [EdiElement(23)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Monetary Amount", 240)]
     public string TS324 { get; set; }
 }

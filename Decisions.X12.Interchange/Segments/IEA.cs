@@ -1,14 +1,24 @@
-﻿using DecisionsFramework.Design.ConfigurationStorage.Attributes;
+﻿using System.Runtime.Serialization;
+using Decisions.X12.Attributes;
+using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
-using System.Runtime.Serialization;
 
 namespace Decisions.X12.Interchange.Segments;
 
-[DataContract, Writable]
+[EdiSegment(nameof(IEA))]
+[DataContract]
+[Writable]
 public class IEA
 {
-    [DataMember, WritableValue, PropertyClassification("Number of Included Functional Groups", 10)]
+    [EdiElement(0)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Number of Included Functional Groups", 10)]
     public string IEA01 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Interchange Control Number", 20)]
+
+    [EdiElement(1)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Interchange Control Number", 20)]
     public string IEA02 { get; set; }
 }

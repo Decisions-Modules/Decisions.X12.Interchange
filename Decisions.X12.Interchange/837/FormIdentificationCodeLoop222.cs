@@ -1,17 +1,26 @@
 ﻿using System.Runtime.Serialization;
 using System.Xml.Serialization;
+using Decisions.X12.Attributes;
 using Decisions.X12.Interchange.Segments;
 using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
 
 namespace X12Interchange837;
 
-[DataContract, Writable]
+[DataContract]
+[Writable]
 public class FormIdentificationCodeLoop222 // 2440 Loop
 {
-    [DataMember, WritableValue, PropertyClassification("Form Identification Code", 10)]
+    [EdiElement(0)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Form Identification Code", 10)]
     public LQ LQ { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Supporting Documentation", 20)]
+
+    [EdiElement(1)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Supporting Documentation", 20)]
     [XmlElement("FRM")]
     public FRM[] FRM { get; set; }
 }
