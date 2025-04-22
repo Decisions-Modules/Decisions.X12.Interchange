@@ -1,23 +1,23 @@
-﻿using System.Text;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using Decisions.X12.Interchange.Segments;
 using Decisions.X12.Parsing;
 using DecisionsFramework.Design.Flow;
 
-namespace X12Interchange999;
+namespace X12Interchange997;
 
-[AutoRegisterMethodsOnClass(true, "Data", "X12", "999")]
-public class X12Steps999
+[AutoRegisterMethodsOnClass(true, "Data", "X12", "997")]
+public class X12Steps997
 {
-    public static Interchange Deserialize999(string Document999, bool inputIsPath = false)
+    public static Interchange Deserialize997(string Document997, bool inputIsPath = false)
     {
         // EDI string -> X12 Xml string -> Interchange
         var parser = new X12Parser(true);
         Decisions.X12.Parsing.Model.Interchange interchange;
 
         using (FileStream fs = inputIsPath
-                   ? new FileStream(Document999, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096,
+                   ? new FileStream(Document997, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096,
                        FileOptions.None)
                    : new FileStream(Path.GetTempFileName(), FileMode.Open, FileAccess.ReadWrite, FileShare.None,
                        4096, FileOptions.DeleteOnClose))
@@ -26,7 +26,7 @@ public class X12Steps999
             {
                 using (StreamWriter writer = new StreamWriter(fs, Encoding.UTF8, 4096, true))
                 {
-                    writer.Write(Document999);
+                    writer.Write(Document997);
                 }
 
                 fs.Position = 0;
@@ -57,8 +57,8 @@ public class X12Steps999
                         OnUnknownElement = HandleUnknownElement
                     });
 
-                if (result?.FunctionGroup?.Transaction?.ST?.ST01 != "999")
-                    throw new InvalidOperationException("Incorrect document being used.  Please use 999");
+                if (result?.FunctionGroup?.Transaction?.ST?.ST01 != "997")
+                    throw new InvalidOperationException("Incorrect document being used.  Please use 997");
 
                 if (result?.FunctionGroup?.Transaction?.TransactionSetResponseHeaderLoop2000ForDeserialize != null)
                 {
@@ -70,23 +70,10 @@ public class X12Steps999
                     {
                         foreach (var t in result.FunctionGroup.Transaction.TransactionSetResponseHeaderLoop2000)
                         {
-                            if (t.ErrorIdentificationLoop2100ForDeserialize != null)
+                            if (t.DataSegmentLoop2100ForDeserialize != null)
                             {
-                                t.ErrorIdentificationLoop2100 = t.ErrorIdentificationLoop2100ForDeserialize.ToArray();
-                                t.ErrorIdentificationLoop2100ForDeserialize = null;
-
-                                if (t.ErrorIdentificationLoop2100 != null)
-                                {
-                                    foreach (var s in t.ErrorIdentificationLoop2100)
-                                    {
-                                        if (s.ImplementationDataElementNoteLoop2110ForDeserialize != null)
-                                        {
-                                            s.ImplementationDataElementNoteLoop2110 =
-                                                s.ImplementationDataElementNoteLoop2110ForDeserialize.ToArray();
-                                            s.ImplementationDataElementNoteLoop2110ForDeserialize = null;
-                                        }
-                                    }
-                                }
+                                t.DataSegmentLoop2100 = t.DataSegmentLoop2100ForDeserialize.ToArray();
+                                t.DataSegmentLoop2100ForDeserialize = null;
                             }
                         }
                     }
@@ -106,7 +93,7 @@ public class X12Steps999
         {
             case "2000": // TransactionSetResponseHeaderLoop
             {
-                Transaction999 transaction = args?.ObjectBeingDeserialized as Transaction999;
+                Transaction997 transaction = args?.ObjectBeingDeserialized as Transaction997;
                 if(transaction == null)
                     throw new InvalidOperationException("Expected LoopId 2000 to be TransactionSetResponseHeaderLoop inside Transaction");
 
@@ -126,30 +113,14 @@ public class X12Steps999
                 if(headerLoop2000 == null)
                     throw new InvalidOperationException("Expected LoopId 2100 to be ErrorIdentificationLoop inside TransactionSetResponseHeaderLoop");
 
-                ErrorIdentificationLoop2100 loop =
-                    GetLoopValue<ErrorIdentificationLoop2100>(args.Element);
+                DataSegmentLoop2100 loop =
+                    GetLoopValue<DataSegmentLoop2100>(args.Element);
 
-                if (headerLoop2000.ErrorIdentificationLoop2100ForDeserialize == null)
-                    headerLoop2000.ErrorIdentificationLoop2100ForDeserialize =
-                        new List<ErrorIdentificationLoop2100>();
+                if (headerLoop2000.DataSegmentLoop2100ForDeserialize == null)
+                    headerLoop2000.DataSegmentLoop2100ForDeserialize =
+                        new List<DataSegmentLoop2100>();
                 
-                headerLoop2000.ErrorIdentificationLoop2100ForDeserialize.Add(loop);
-            }
-            break;
-            case "2110": // ImplementationDataElementNoteLoop
-            {
-                ErrorIdentificationLoop2100 identificationLoop2000 = args?.ObjectBeingDeserialized as ErrorIdentificationLoop2100;
-                if(identificationLoop2000 == null)
-                    throw new InvalidOperationException("Expected LoopId 2110 to be ImplementationDataElementNoteLoop inside ErrorIdentificationLoop");
-
-                ImplementationDataElementNoteLoop2110 loop =
-                    GetLoopValue<ImplementationDataElementNoteLoop2110>(args.Element);
-
-                if (identificationLoop2000.ImplementationDataElementNoteLoop2110ForDeserialize == null)
-                    identificationLoop2000.ImplementationDataElementNoteLoop2110ForDeserialize =
-                        new List<ImplementationDataElementNoteLoop2110>();
-                
-                identificationLoop2000.ImplementationDataElementNoteLoop2110ForDeserialize.Add(loop);
+                headerLoop2000.DataSegmentLoop2100ForDeserialize.Add(loop);
             }
             break;
         }
