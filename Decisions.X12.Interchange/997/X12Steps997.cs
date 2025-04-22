@@ -57,7 +57,7 @@ public class X12Steps997
                         OnUnknownElement = HandleUnknownElement
                     });
 
-                if (result?.FunctionGroup?.Transaction?.ST?.ST01 != "997")
+                if (result?.FunctionGroup.Transactions.Any(t => t.ST.ST01 != "997") ?? false)
                     throw new InvalidOperationException("Incorrect document being used.  Please use 997");
 
                 if (result?.FunctionGroup?.Transaction?.TransactionSetResponseHeaderLoop2000ForDeserialize != null)
