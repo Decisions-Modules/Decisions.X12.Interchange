@@ -88,10 +88,7 @@ public class X12Steps999
             }
         }
     }
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
+    
     private static void HandleUnknownElement(object obj, XmlElementEventArgs args)
     {
         if ((bool)!args?.Element?.Name?.Contains("Loop"))
