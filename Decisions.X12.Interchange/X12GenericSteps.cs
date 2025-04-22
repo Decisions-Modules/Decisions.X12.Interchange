@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Decisions.X12.Interchange.Segments;
 using Decisions.X12.Parsing;
 using DecisionsFramework.Design.Flow;
 
@@ -60,5 +61,10 @@ public class X12GenericSteps
         }
 
         return interchange.Serialize();
+    }
+    
+    public static string? SerializeToEdi(object segmentObject, char elementDelimiter = '*', char segmentTerminator = '~')
+    {
+        return (segmentObject as EdiSegmentBase)?.ToEdi(elementDelimiter, segmentTerminator);
     }
 }

@@ -1,14 +1,24 @@
 ﻿using System.Runtime.Serialization;
+using Decisions.X12.Attributes;
 using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
 
 namespace Decisions.X12.Interchange.Segments;
 
-[DataContract, Writable]
+[EdiSegment(nameof(QTY))]
+[DataContract]
+[Writable]
 public class QTY
 {
-    [DataMember, WritableValue, PropertyClassification("Quantity Qualifier", 10)]
+    [EdiElement(0)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Quantity Qualifier", 10)]
     public string QTY01 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Quantity", 20)]
+
+    [EdiElement(1)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Quantity", 20)]
     public string QTY02 { get; set; }
 }

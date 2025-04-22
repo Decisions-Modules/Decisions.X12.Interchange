@@ -1,16 +1,30 @@
-﻿using DecisionsFramework.Design.ConfigurationStorage.Attributes;
+﻿using System.Runtime.Serialization;
+using Decisions.X12.Attributes;
+using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
-using System.Runtime.Serialization;
 
 namespace Decisions.X12.Interchange.Segments;
 
-[DataContract, Writable]
+[EdiSegment(nameof(DTP))]
+[DataContract]
+[Writable]
 public class DTP
 {
-    [DataMember, WritableValue, PropertyClassification("Date Time Qualifier", 10)]
+    [EdiElement(0)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Date Time Qualifier", 10)]
     public string DTP01 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Date Time Format Qualifier", 20)]
+
+    [EdiElement(1)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Date Time Format Qualifier", 20)]
     public string DTP02 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Date Time Period", 30)]
+
+    [EdiElement(2)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Date Time Period", 30)]
     public string DTP03 { get; set; }
 }

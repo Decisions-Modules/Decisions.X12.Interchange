@@ -1,14 +1,24 @@
-﻿using DecisionsFramework.Design.ConfigurationStorage.Attributes;
+﻿using System.Runtime.Serialization;
+using Decisions.X12.Attributes;
+using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
-using System.Runtime.Serialization;
 
 namespace Decisions.X12.Interchange.Segments;
 
-[DataContract, Writable]
+[EdiSegment(nameof(GE))]
+[DataContract]
+[Writable]
 public class GE
 {
-    [DataMember, WritableValue, PropertyClassification("Number of Transaction Sets Included", 10)]
+    [EdiElement(0)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Number of Transaction Sets Included", 10)]
     public string GE01 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Group Control Number", 20)]
+
+    [EdiElement(1)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Group Control Number", 20)]
     public string GE02 { get; set; }
 }

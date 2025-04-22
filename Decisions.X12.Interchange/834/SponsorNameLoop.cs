@@ -1,13 +1,18 @@
-﻿using DecisionsFramework.Design.ConfigurationStorage.Attributes;
-using DecisionsFramework.Design.Properties;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
+using Decisions.X12.Attributes;
 using Decisions.X12.Interchange.Segments;
+using DecisionsFramework.Design.ConfigurationStorage.Attributes;
+using DecisionsFramework.Design.Properties;
 
 namespace X12Interchange834;
 
-[DataContract, Writable]
+[DataContract]
+[Writable]
 public class SponsorNameLoop
 {
-    [DataMember, WritableValue, PropertyClassification("Sponsor Name", 10)]
+    [EdiElement(0)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Sponsor Name", 10)]
     public N1 N1 { get; set; }
 }

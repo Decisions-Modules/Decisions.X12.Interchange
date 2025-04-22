@@ -1,14 +1,24 @@
 ﻿using System.Runtime.Serialization;
+using Decisions.X12.Attributes;
 using DecisionsFramework.Design.ConfigurationStorage.Attributes;
 using DecisionsFramework.Design.Properties;
 
 namespace Decisions.X12.Interchange.Segments;
 
-[DataContract, Writable]
+[EdiSegment(nameof(DTM))]
+[DataContract]
+[Writable]
 public class DTM
 {
-    [DataMember, WritableValue, PropertyClassification("DateTime Qualifier", 10)]
+    [EdiElement(0)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("DateTime Qualifier", 10)]
     public string DTM01 { get; set; }
-    [DataMember, WritableValue, PropertyClassification("Date", 20)]
+
+    [EdiElement(1)]
+    [DataMember]
+    [WritableValue]
+    [PropertyClassification("Date", 20)]
     public string DTM02 { get; set; }
 }
