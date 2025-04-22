@@ -63,7 +63,7 @@ public class X12GenericSteps
         return interchange.Serialize();
     }
     
-    public static string? SerializeToEdi(object segmentObject, char elementDelimiter = '*', char segmentTerminator = '~')
+    public static string? SerializeToEdi(EdiSegmentBase segmentObject, char elementDelimiter = '*', char segmentTerminator = '~')
     {
         return (segmentObject as EdiSegmentBase)?.ToEdi(elementDelimiter, segmentTerminator);
     }
