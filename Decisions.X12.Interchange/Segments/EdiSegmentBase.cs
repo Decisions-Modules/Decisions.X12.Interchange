@@ -7,9 +7,9 @@ public abstract class EdiSegmentBase
 {
     public virtual string ToEdi(char elementDelimiter = '*', char segmentTerminator = '~')
     {
-        var type = GetType();
-        var segmentId = type.GetCustomAttribute<EdiSegmentAttribute>()?.SegmentId
-                        ?? throw new InvalidOperationException("Missing EdiSegment attribute.");
+        Type type = GetType();
+        string segmentId = type.GetCustomAttribute<EdiSegmentAttribute>()?.SegmentId
+                           ?? throw new InvalidOperationException("Missing EdiSegment attribute.");
 
         var properties = type.GetProperties()
             .Select(p => new
@@ -20,7 +20,7 @@ public abstract class EdiSegmentBase
             .Where(x => x.Attr != null)
             .OrderBy(x => x.Attr.Position);
 
-        var values = properties
+        List<string> values = properties
             .Select(x => x.Property.GetValue(this)?.ToString() ?? string.Empty)
             .ToList();
 
@@ -31,11 +31,11 @@ public abstract class EdiSegmentBase
 
     public virtual void FromEdi(string ediLine, char elementDelimiter = '*')
     {
-        var type = GetType();
-        var expectedSegmentId = type.GetCustomAttribute<EdiSegmentAttribute>()?.SegmentId
-                                ?? throw new InvalidOperationException("Missing EdiSegment attribute.");
+        Type type = GetType();
+        string expectedSegmentId = type.GetCustomAttribute<EdiSegmentAttribute>()?.SegmentId
+                                   ?? throw new InvalidOperationException("Missing EdiSegment attribute.");
 
-        var parts = ediLine.TrimEnd('~').Split(elementDelimiter);
+        string[] parts = ediLine.TrimEnd('~').Split(elementDelimiter);
         if (parts.Length == 0 || parts[0] != expectedSegmentId)
             throw new InvalidOperationException(
                 $"Segment ID mismatch. Expected '{expectedSegmentId}', got '{parts[0]}'.");
@@ -50,9 +50,9 @@ public abstract class EdiSegmentBase
             .OrderBy(x => x.Attr.Position)
             .ToList();
 
-        for (var i = 0; i < props.Count && i + 1 < parts.Length; i++) // +1 to skip segment ID
+        for (int i = 0; i < props.Count && i + 1 < parts.Length; i++) // +1 to skip segment ID
         {
-            var value = Convert.ChangeType(parts[i + 1], props[i].Property.PropertyType);
+            object value = Convert.ChangeType(parts[i + 1], props[i].Property.PropertyType);
             props[i].Property.SetValue(this, value);
         }
     }

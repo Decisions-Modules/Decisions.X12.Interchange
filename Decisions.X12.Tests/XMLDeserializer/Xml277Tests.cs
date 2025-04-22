@@ -1,4 +1,5 @@
 using X12Interchange277;
+using X12Interchange277X364;
 
 namespace Decisions.X12.Tests.XMLDeserializer;
 
@@ -29,7 +30,7 @@ public class Xml277Tests
     [Test]
     public void Deserialize277Test()
     {
-        var msg = X12Steps277.Deserialize277X364(TEST_MSG);
+        X12Interchange277X364.Interchange msg = X12Steps277.Deserialize277X364(TEST_MSG);
         Assert.Multiple(() =>
         {
             // BHT - Beginning of Hierarchical Transaction
@@ -41,7 +42,7 @@ public class Xml277Tests
             Assert.That(msg.FunctionGroup.Transaction.BHT.BHT06, Is.EqualTo("RP"));
 
             // HL - Payer
-            var payer = msg.FunctionGroup.Transaction.SourceLevelLoop3642000A[0];
+            SourceLevelLoop3642000A payer = msg.FunctionGroup.Transaction.SourceLevelLoop3642000A[0];
             Assert.That(payer.HL.HL01, Is.EqualTo("1"));
             Assert.That(payer.HL.HL03, Is.EqualTo("20"));
             Assert.That(payer.PayerNameLoop3642100A.NM1.NM101, Is.EqualTo("PR"));

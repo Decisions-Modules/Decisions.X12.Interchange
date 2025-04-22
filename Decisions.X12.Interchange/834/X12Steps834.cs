@@ -53,17 +53,17 @@ public static class X12Steps834
     public static Interchange DeserializeFrom834(string Document834, bool InputIsPath = false)
     {
         // 834 -> lib Interchange -> xml -> Decisions Interchange
-        var parser = new X12Parser(true);
+        X12Parser parser = new X12Parser(true);
         Decisions.X12.Parsing.Model.Interchange oopFactoryInterchange;
 
         // Stream from the given path, or write the document to a temp file to avoid allocation of huge byte array in MemoryStream:
-        using (var fs834 = InputIsPath
+        using (FileStream fs834 = InputIsPath
                    ? new FileStream(Document834, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, FileOptions.None)
                    : new FileStream(Path.GetTempFileName(), FileMode.Open, FileAccess.ReadWrite, FileShare.None, 4096, FileOptions.DeleteOnClose))
         {
             if (!InputIsPath)
             {
-                using (var writer = new StreamWriter(fs834, Encoding.UTF8, 4096, true))
+                using (StreamWriter writer = new StreamWriter(fs834, Encoding.UTF8, 4096, true))
                 {
                     writer.Write(Document834);
                 }
@@ -75,7 +75,7 @@ public static class X12Steps834
         }
 
         // Create a temporary file with no sharing permissions that will be deleted when closed:
-        using (var fs = new FileStream(Path.GetTempFileName(), FileMode.Open, FileAccess.ReadWrite, FileShare.None,
+        using (FileStream fs = new FileStream(Path.GetTempFileName(), FileMode.Open, FileAccess.ReadWrite, FileShare.None,
                    4096, FileOptions.DeleteOnClose))
         {
             // Serialize the Interchange to file:
@@ -83,13 +83,13 @@ public static class X12Steps834
             // Prepare to read what we just wrote:
             fs.Position = 0;
             // Ignore ISA16 so the XmlSerializer doesn't throw an error when it sees an object instead of a string:
-            var overrides = new XmlAttributeOverrides();
+            XmlAttributeOverrides overrides = new XmlAttributeOverrides();
             overrides.Add(typeof(ISA), nameof(ISA.ISA16), new XmlAttributes { XmlIgnore = true });
-            var serializer = new XmlSerializer(typeof(Interchange), overrides);
+            XmlSerializer serializer = new XmlSerializer(typeof(Interchange), overrides);
 
-            using (var xmlReader = XmlReader.Create(fs, new XmlReaderSettings { IgnoreComments = true, CheckCharacters = false }))
+            using (XmlReader xmlReader = XmlReader.Create(fs, new XmlReaderSettings { IgnoreComments = true, CheckCharacters = false }))
             {
-                var result = (Interchange)serializer.Deserialize(xmlReader,
+                Interchange? result = (Interchange)serializer.Deserialize(xmlReader,
                     new XmlDeserializationEvents
                     {
                         OnUnknownElement = HandleUnknownElement
@@ -117,7 +117,7 @@ public static class X12Steps834
         {
             case "1000A": // SponsorNameLoop
             {
-                var transaction834 = args?.ObjectBeingDeserialized as Transaction834;
+                Transaction834? transaction834 = args?.ObjectBeingDeserialized as Transaction834;
                 if (transaction834 == null)
                     throw new InvalidOperationException(
                         "Expected LoopId 1000A to be SponsorNameLoop inside Transaction");
@@ -127,12 +127,12 @@ public static class X12Steps834
                 break;
             case "2000": // MemberLevelDetailLoop
             {
-                var transaction834 = args?.ObjectBeingDeserialized as Transaction834;
+                Transaction834? transaction834 = args?.ObjectBeingDeserialized as Transaction834;
                 if (transaction834 == null)
                     throw new InvalidOperationException(
                         "Expected LoopId 2000 to be MemberLevelDetailLoop inside Transaction");
 
-                var newLoop = GetLoopValue<MemberLevelDetailLoop>(args.Element);
+                MemberLevelDetailLoop newLoop = GetLoopValue<MemberLevelDetailLoop>(args.Element);
 
                 if (transaction834.memberLevelDetailLoopForDeserialize == null)
                     transaction834.memberLevelDetailLoopForDeserialize = new List<MemberLevelDetailLoop>();
@@ -143,7 +143,7 @@ public static class X12Steps834
                 break;
             case "2100A": // MemberNameLoop
             {
-                var detailLoop = args?.ObjectBeingDeserialized as MemberLevelDetailLoop;
+                MemberLevelDetailLoop? detailLoop = args?.ObjectBeingDeserialized as MemberLevelDetailLoop;
                 if (detailLoop == null)
                     throw new InvalidOperationException(
                         "Expected LoopId 2100A to be MemberNameLoop inside MemberLevelDetailLoop");
@@ -153,7 +153,7 @@ public static class X12Steps834
                 break;
             case "2300": // HealthCoverageLoop
             {
-                var detailLoop = args?.ObjectBeingDeserialized as MemberLevelDetailLoop;
+                MemberLevelDetailLoop? detailLoop = args?.ObjectBeingDeserialized as MemberLevelDetailLoop;
                 if (detailLoop == null)
                     throw new InvalidOperationException(
                         "Expected LoopId 2300 to be HealthCoverageLoop inside MemberLevelDetailLoop");
@@ -166,12 +166,12 @@ public static class X12Steps834
 
     private static TLoop GetLoopValue<TLoop>(XmlElement element)
     {
-        using (var stringReader = new StringReader(element.OuterXml))
-        using (var xmlReader = XmlReader.Create(stringReader,
+        using (StringReader stringReader = new StringReader(element.OuterXml))
+        using (XmlReader xmlReader = XmlReader.Create(stringReader,
                    new XmlReaderSettings { IgnoreComments = true, CheckCharacters = false }))
         {
-            var ser = new XmlSerializer(typeof(TLoop), new XmlRootAttribute(element.Name));
-            var loop = (TLoop)ser.Deserialize(xmlReader, new XmlDeserializationEvents
+            XmlSerializer ser = new XmlSerializer(typeof(TLoop), new XmlRootAttribute(element.Name));
+            TLoop? loop = (TLoop)ser.Deserialize(xmlReader, new XmlDeserializationEvents
             {
                 OnUnknownElement = HandleUnknownElement
             });
@@ -184,29 +184,29 @@ public static class X12Steps834
     {
         // Decisions Interchange -> xml -> 834
         string xml;
-        using (var ms = new MemoryStream())
+        using (MemoryStream ms = new MemoryStream())
         {
-            var serializer = new XmlSerializer(typeof(Interchange));
+            XmlSerializer serializer = new XmlSerializer(typeof(Interchange));
             serializer.Serialize(ms, interchange834);
             xml = Encoding.UTF8.GetString(ms.ToArray());
         }
 
         xml = ApplyXsltTransform(xml, xsltForSerialize);
 
-        var parser = new X12Parser(true);
-        var result = parser.TransformToX12(xml);
+        X12Parser parser = new X12Parser(true);
+        string result = parser.TransformToX12(xml);
         return result;
     }
 
     private static string ApplyXsltTransform(string xml, string xslt)
     {
-        using (var xmlStringReader = new StringReader(xml))
-        using (var xsltStringReader = new StringReader(xslt))
+        using (StringReader xmlStringReader = new StringReader(xml))
+        using (StringReader xsltStringReader = new StringReader(xslt))
         {
-            var xslTransform = new XslCompiledTransform();
+            XslCompiledTransform xslTransform = new XslCompiledTransform();
             try
             {
-                using (var xmlReader = XmlReader.Create(xsltStringReader))
+                using (XmlReader xmlReader = XmlReader.Create(xsltStringReader))
                 {
                     xslTransform.Load(xmlReader);
                 }
@@ -218,14 +218,14 @@ public static class X12Steps834
 
             try
             {
-                var settings = new XmlWriterSettings
+                XmlWriterSettings settings = new XmlWriterSettings
                 {
                     OmitXmlDeclaration = true
                 };
 
-                using (var xmlReader = XmlReader.Create(xmlStringReader))
-                using (var stringWriter = new StringWriter())
-                using (var xmlWriter = XmlWriter.Create(stringWriter, settings))
+                using (XmlReader xmlReader = XmlReader.Create(xmlStringReader))
+                using (StringWriter stringWriter = new StringWriter())
+                using (XmlWriter xmlWriter = XmlWriter.Create(stringWriter, settings))
                 {
                     xslTransform.Transform(xmlReader, xmlWriter);
                     return stringWriter.ToString();

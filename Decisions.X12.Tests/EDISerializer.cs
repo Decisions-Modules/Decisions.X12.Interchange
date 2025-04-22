@@ -7,7 +7,7 @@ public class EDISerializer
     [Test]
     public void SerializeTA1()
     {
-        var ta = new TA1()
+        TA1 ta = new TA1()
         {
             TA101 = "aaa",
             TA102 = "bbb",
@@ -16,7 +16,7 @@ public class EDISerializer
             TA105 = "eee"
         };
 
-        var output = ta.ToEdi();
+        string output = ta.ToEdi();
         Assert.That(output, Is.EqualTo("TA1*aaa*bbb*ccc*ddd*eee~"));
 
     }
@@ -24,7 +24,7 @@ public class EDISerializer
     [Test]
     public void DeserializeTA1()
     {
-        var ta = new TA1();
+        TA1 ta = new TA1();
         ta.FromEdi("TA1*aaa*bbb*ccc*ddd*eee~");
         
         Assert.That(ta.TA101, Is.EqualTo("aaa"));

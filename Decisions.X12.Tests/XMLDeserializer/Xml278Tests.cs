@@ -23,7 +23,7 @@ public class Xml278Tests
     [Test]
     public void Deserialize278Test()
     {
-        var msg = X12Steps278.Deserialize278X217Review(TEST_MSG);
+        Interchange278X217Review.Interchange msg = X12Steps278.Deserialize278X217Review(TEST_MSG);
         Assert.Multiple(() =>
         {
             // BHT - Beginning Hierarchical Transaction

@@ -13,16 +13,16 @@ public class X12Steps835
     public static Interchange Deserialize835EDI(string Document835, bool inputIsPath = false)
     {
         // EDI string -> X12 Xml string
-        var parser = new X12Parser(true);
+        X12Parser parser = new X12Parser(true);
         Decisions.X12.Parsing.Model.Interchange interchange;
 
-        using (var fs = inputIsPath
+        using (FileStream fs = inputIsPath
                    ? new FileStream(Document835, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, FileOptions.None)
                    : new FileStream(Path.GetTempFileName(), FileMode.Open, FileAccess.ReadWrite, FileShare.None, 4096, FileOptions.DeleteOnClose))
         {
             if (!inputIsPath)
             {
-                using (var writer = new StreamWriter(fs, Encoding.UTF8, 4096, true))
+                using (StreamWriter writer = new StreamWriter(fs, Encoding.UTF8, 4096, true))
                 {
                     writer.Write(Document835);
                 }
@@ -34,7 +34,7 @@ public class X12Steps835
         }
 
         // Create a temporary file with no sharing permissions that will be deleted when closed:
-        using (var fs = new FileStream(Path.GetTempFileName(), FileMode.Open, FileAccess.ReadWrite,
+        using (FileStream fs = new FileStream(Path.GetTempFileName(), FileMode.Open, FileAccess.ReadWrite,
                    FileShare.None, 4096, FileOptions.DeleteOnClose))
         {
             // Serialize the Interchange to file:
@@ -42,14 +42,14 @@ public class X12Steps835
             // Prepare to read what we just wrote:
             fs.Position = 0;
             // Ignore ISA16 so the XmlSerializer doesn't throw an error when it sees an object instead of a string:
-            var overrides = new XmlAttributeOverrides();
+            XmlAttributeOverrides overrides = new XmlAttributeOverrides();
             overrides.Add(typeof(ISA), nameof(ISA.ISA16), new XmlAttributes { XmlIgnore = true });
-            var serializer = new XmlSerializer(typeof(Interchange), overrides);
+            XmlSerializer serializer = new XmlSerializer(typeof(Interchange), overrides);
 
-            using (var xmlReader = XmlReader.Create(fs,
+            using (XmlReader xmlReader = XmlReader.Create(fs,
                        new XmlReaderSettings { IgnoreComments = true, CheckCharacters = false }))
             {
-                var result = (Interchange)serializer.Deserialize(xmlReader,
+                Interchange? result = (Interchange)serializer.Deserialize(xmlReader,
                     new XmlDeserializationEvents
                     {
                         OnUnknownElement = HandleUnknownElement
@@ -64,14 +64,14 @@ public class X12Steps835
                         .HeaderNumberLoopForDeserialize.ToArray();
                     result.FunctionGroup.Transaction.HeaderNumberLoopForDeserialize = null;
 
-                    foreach (var t in result.FunctionGroup.Transaction.HeaderNumberLoop)
+                    foreach (HeaderNumberLoop t in result.FunctionGroup.Transaction.HeaderNumberLoop)
                         if (t.ClaimPaymentInformationLoopForDeserialize != null)
                         {
                             t.ClaimPaymentInformationLoop = t.ClaimPaymentInformationLoopForDeserialize.ToArray();
                             t.ClaimPaymentInformationLoopForDeserialize = null;
 
                             if (t.ClaimPaymentInformationLoop != null)
-                                foreach (var s in t.ClaimPaymentInformationLoop)
+                                foreach (ClaimPaymentInformationLoop s in t.ClaimPaymentInformationLoop)
                                     if (s.ServicePaymentInformationLoopForDeserialize != null)
                                     {
                                         s.ServicePaymentInformationLoop =
@@ -95,35 +95,35 @@ public class X12Steps835
         {
             case "1000A": // PayerIdentificationLoop
             {
-                var transaction = args?.ObjectBeingDeserialized as Transaction835;
+                Transaction835? transaction = args?.ObjectBeingDeserialized as Transaction835;
                 if (transaction == null)
                     throw new InvalidOperationException(
                         "Expected LoopId 1000A to be PayerIdentificationLoop inside Transaction");
 
-                var loop = GetLoopValue<PayerIdentificationLoop>(args.Element);
+                PayerIdentificationLoop loop = GetLoopValue<PayerIdentificationLoop>(args.Element);
 
                 transaction.PayerIdentificationLoop = loop;
             }
                 break;
             case "1000B": // PayeeIdentificationLoop
             {
-                var transaction = args?.ObjectBeingDeserialized as Transaction835;
+                Transaction835? transaction = args?.ObjectBeingDeserialized as Transaction835;
                 if (transaction == null)
                     throw new InvalidOperationException(
                         "Expected LoopId 1000B to be PayeeIdentificationLoop inside Transaction");
 
-                var loop = GetLoopValue<PayeeIdentificationLoop>(args.Element);
+                PayeeIdentificationLoop loop = GetLoopValue<PayeeIdentificationLoop>(args.Element);
 
                 transaction.PayeeIdentificationLoop = loop;
             }
                 break;
             case "2000": // HeaderNumberLoop
             {
-                var transaction = args?.ObjectBeingDeserialized as Transaction835;
+                Transaction835? transaction = args?.ObjectBeingDeserialized as Transaction835;
                 if (transaction == null)
                     throw new InvalidOperationException(
                         "Expected LoopId 1000 to be HeaderNumberLoop inside Transaction");
-                var loop = GetLoopValue<HeaderNumberLoop>(args.Element);
+                HeaderNumberLoop loop = GetLoopValue<HeaderNumberLoop>(args.Element);
 
                 if (transaction.HeaderNumberLoopForDeserialize == null)
                     transaction.HeaderNumberLoopForDeserialize = new List<HeaderNumberLoop>();
@@ -133,12 +133,12 @@ public class X12Steps835
                 break;
             case "2100": // ClaimPaymentInformationLoop
             {
-                var headerNumber = args?.ObjectBeingDeserialized as HeaderNumberLoop;
+                HeaderNumberLoop? headerNumber = args?.ObjectBeingDeserialized as HeaderNumberLoop;
                 if (headerNumber == null)
                     throw new InvalidOperationException(
                         "Expected LoopId 2100 to be ClaimPaymentInformationLoop inside HeaderNumberLoop");
 
-                var loop = GetLoopValue<ClaimPaymentInformationLoop>(args.Element);
+                ClaimPaymentInformationLoop loop = GetLoopValue<ClaimPaymentInformationLoop>(args.Element);
 
                 if (headerNumber.ClaimPaymentInformationLoopForDeserialize == null)
                     headerNumber.ClaimPaymentInformationLoopForDeserialize = new List<ClaimPaymentInformationLoop>();
@@ -148,12 +148,12 @@ public class X12Steps835
                 break;
             case "2110": // ServicePaymentInformationLoop
             {
-                var claimPaymentInformationLoop = args?.ObjectBeingDeserialized as ClaimPaymentInformationLoop;
+                ClaimPaymentInformationLoop? claimPaymentInformationLoop = args?.ObjectBeingDeserialized as ClaimPaymentInformationLoop;
                 if (claimPaymentInformationLoop == null)
                     throw new InvalidOperationException(
                         "Expected LoopId 2110 to be ServicePaymentInformationLoop inside ClaimPaymentInformationLoop");
 
-                var loop = GetLoopValue<ServicePaymentInformationLoop>(args.Element);
+                ServicePaymentInformationLoop loop = GetLoopValue<ServicePaymentInformationLoop>(args.Element);
 
                 if (claimPaymentInformationLoop.ServicePaymentInformationLoopForDeserialize == null)
                     claimPaymentInformationLoop.ServicePaymentInformationLoopForDeserialize =
@@ -167,12 +167,12 @@ public class X12Steps835
 
     private static TLoop GetLoopValue<TLoop>(XmlElement element)
     {
-        using (var stringReader = new StringReader(element.OuterXml))
-        using (var xmlReader = XmlReader.Create(stringReader,
+        using (StringReader stringReader = new StringReader(element.OuterXml))
+        using (XmlReader xmlReader = XmlReader.Create(stringReader,
                    new XmlReaderSettings { IgnoreComments = true, CheckCharacters = false }))
         {
-            var ser = new XmlSerializer(typeof(TLoop), new XmlRootAttribute(element.Name));
-            var loop = (TLoop)ser.Deserialize(xmlReader, new XmlDeserializationEvents
+            XmlSerializer ser = new XmlSerializer(typeof(TLoop), new XmlRootAttribute(element.Name));
+            TLoop? loop = (TLoop)ser.Deserialize(xmlReader, new XmlDeserializationEvents
             {
                 OnUnknownElement = HandleUnknownElement
             });

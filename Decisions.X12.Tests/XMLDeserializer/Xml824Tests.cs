@@ -21,7 +21,7 @@ public class Xml824Tests
     [Test]
     public void Deserialize824Test()
     {
-        var msg = X12Steps824.Deserialize824(TEST_MSG);
+        X12Interchange824.Interchange msg = X12Steps824.Deserialize824(TEST_MSG);
         Assert.Multiple(() =>
         {
             // BGN - Beginning Segment

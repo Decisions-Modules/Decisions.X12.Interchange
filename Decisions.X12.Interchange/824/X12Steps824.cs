@@ -13,16 +13,16 @@ public class X12Steps824
     public static Interchange Deserialize824(string Document824, bool inputIsPath = false)
     {
         // EDI string -> X12 Xml string
-        var parser = new X12Parser(true);
+        X12Parser parser = new X12Parser(true);
         Decisions.X12.Parsing.Model.Interchange interchange;
 
-        using (var fs = inputIsPath
+        using (FileStream fs = inputIsPath
                    ? new FileStream(Document824, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, FileOptions.None)
                    : new FileStream(Path.GetTempFileName(), FileMode.Open, FileAccess.ReadWrite, FileShare.None, 4096, FileOptions.DeleteOnClose))
         {
             if (!inputIsPath)
             {
-                using (var writer = new StreamWriter(fs, Encoding.UTF8, 4096, true))
+                using (StreamWriter writer = new StreamWriter(fs, Encoding.UTF8, 4096, true))
                 {
                     writer.Write(Document824);
                 }
@@ -34,20 +34,20 @@ public class X12Steps824
         }
 
         // Create a temporary file with no sharing permissions that will be deleted when closed:
-        using (var fs = new FileStream(Path.GetTempFileName(), FileMode.Open, FileAccess.ReadWrite, FileShare.None, 4096, FileOptions.DeleteOnClose))
+        using (FileStream fs = new FileStream(Path.GetTempFileName(), FileMode.Open, FileAccess.ReadWrite, FileShare.None, 4096, FileOptions.DeleteOnClose))
         {
             // Serialize the Interchange to file:
             interchange.Serialize(fs);
             // Prepare to read what we just wrote:
             fs.Position = 0;
             // Ignore ISA16 so the XmlSerializer doesn't throw an error when it sees an object instead of a string:
-            var overrides = new XmlAttributeOverrides();
+            XmlAttributeOverrides overrides = new XmlAttributeOverrides();
             overrides.Add(typeof(ISA), nameof(ISA.ISA16), new XmlAttributes { XmlIgnore = true });
-            var serializer = new XmlSerializer(typeof(Interchange), overrides);
+            XmlSerializer serializer = new XmlSerializer(typeof(Interchange), overrides);
 
-            using (var xmlReader = XmlReader.Create(fs, new XmlReaderSettings { IgnoreComments = true, CheckCharacters = false }))
+            using (XmlReader xmlReader = XmlReader.Create(fs, new XmlReaderSettings { IgnoreComments = true, CheckCharacters = false }))
             {
-                var result = (Interchange)serializer.Deserialize(xmlReader,
+                Interchange? result = (Interchange)serializer.Deserialize(xmlReader,
                     new XmlDeserializationEvents
                     {
                         OnUnknownElement = HandleUnknownElement
@@ -68,7 +68,7 @@ public class X12Steps824
                     result.FunctionGroup.Transaction.OTILoopForDeserialize = null;
 
                     if (result.FunctionGroup.Transaction.OTILoop != null)
-                        foreach (var t in result.FunctionGroup.Transaction.OTILoop)
+                        foreach (OTILoop t in result.FunctionGroup.Transaction.OTILoop)
                         {
                             if (t.TEDLoopForDeserialize != null)
                             {
@@ -83,7 +83,7 @@ public class X12Steps824
 
                                 if (t.LMLoop != null)
                                 {
-                                    foreach (var s in t.LMLoop)
+                                    foreach (LMLoop s in t.LMLoop)
                                     {
                                         if (s.LQLoopForDeserialize != null)
                                         {
@@ -110,11 +110,11 @@ public class X12Steps824
         {
             case "N1": // N1Loop
             {
-                var transaction = args?.ObjectBeingDeserialized as Transaction824;
+                Transaction824? transaction = args?.ObjectBeingDeserialized as Transaction824;
                 if (transaction == null)
                     throw new InvalidOperationException("Expected LoopId N1 to be N1Loop inside Transaction");
 
-                var n1Loop = GetLoopValue<N1Loop>(args.Element);
+                N1Loop n1Loop = GetLoopValue<N1Loop>(args.Element);
                 if (transaction.N1LoopForDeserialize == null)
                     transaction.N1LoopForDeserialize = new List<N1Loop>();
 
@@ -124,11 +124,11 @@ public class X12Steps824
 
             case "OTI": // OTILoop
             {
-                var transaction = args?.ObjectBeingDeserialized as Transaction824;
+                Transaction824? transaction = args?.ObjectBeingDeserialized as Transaction824;
                 if (transaction == null)
                     throw new InvalidOperationException("Expected LoopId OTI to be OTILoop inside Transaction");
 
-                var otiLoop = GetLoopValue<OTILoop>(args.Element);
+                OTILoop otiLoop = GetLoopValue<OTILoop>(args.Element);
                 if (transaction.OTILoopForDeserialize == null)
                     transaction.OTILoopForDeserialize = new List<OTILoop>();
 
@@ -138,11 +138,11 @@ public class X12Steps824
 
             case "TED": // TEDLoop
             {
-                var otiLoop = args?.ObjectBeingDeserialized as OTILoop;
+                OTILoop? otiLoop = args?.ObjectBeingDeserialized as OTILoop;
                 if (otiLoop == null)
                     throw new InvalidOperationException("Expected LoopId TED to be TEDLoop inside OTILoop");
 
-                var tedLoop = GetLoopValue<TEDLoop>(args.Element);
+                TEDLoop tedLoop = GetLoopValue<TEDLoop>(args.Element);
 
                 if (otiLoop.TEDLoopForDeserialize == null)
                     otiLoop.TEDLoopForDeserialize = new List<TEDLoop>();
@@ -152,11 +152,11 @@ public class X12Steps824
                 break;
             case "LM": // LMLoop
             {
-                var otiLoop = args?.ObjectBeingDeserialized as OTILoop;
+                OTILoop? otiLoop = args?.ObjectBeingDeserialized as OTILoop;
                 if (otiLoop == null)
                     throw new InvalidOperationException("Expected LoopId LM to be LMLoop inside OTILoop");
 
-                var lmLoop = GetLoopValue<LMLoop>(args.Element);
+                LMLoop lmLoop = GetLoopValue<LMLoop>(args.Element);
 
                 if (otiLoop.LMLoopForDeserialize == null)
                     otiLoop.LMLoopForDeserialize = new List<LMLoop>();
@@ -166,11 +166,11 @@ public class X12Steps824
                 break;
             case "LQ": // LQLoop
             {
-                var lmLoop = args?.ObjectBeingDeserialized as LMLoop;
+                LMLoop? lmLoop = args?.ObjectBeingDeserialized as LMLoop;
                 if (lmLoop == null)
                     throw new InvalidOperationException("Expected LoopId LQ to be LQLoop inside LMLoop");
 
-                var lqLoop = GetLoopValue<LQLoop>(args.Element);
+                LQLoop lqLoop = GetLoopValue<LQLoop>(args.Element);
 
                 if (lmLoop.LQLoopForDeserialize == null)
                     lmLoop.LQLoopForDeserialize = new List<LQLoop>();
@@ -183,12 +183,12 @@ public class X12Steps824
 
     private static TLoop GetLoopValue<TLoop>(XmlElement element)
     {
-        using (var stringReader = new StringReader(element.OuterXml))
-        using (var xmlReader = XmlReader.Create(stringReader,
+        using (StringReader stringReader = new StringReader(element.OuterXml))
+        using (XmlReader xmlReader = XmlReader.Create(stringReader,
                    new XmlReaderSettings { IgnoreComments = true, CheckCharacters = false }))
         {
-            var ser = new XmlSerializer(typeof(TLoop), new XmlRootAttribute(element.Name));
-            var loop = (TLoop)ser.Deserialize(xmlReader, new XmlDeserializationEvents
+            XmlSerializer ser = new XmlSerializer(typeof(TLoop), new XmlRootAttribute(element.Name));
+            TLoop? loop = (TLoop)ser.Deserialize(xmlReader, new XmlDeserializationEvents
             {
                 OnUnknownElement = HandleUnknownElement
             });

@@ -11,7 +11,7 @@ public class X12GenericSteps
     public static string ConvertXmlToEdi(string xmlDocument, bool inputIsPath = false)
     {
         // X12 Xml string -> EDI string
-        var parser = new X12Parser(true);
+        X12Parser parser = new X12Parser(true);
         string xmlString;
 
         using (FileStream fs = inputIsPath ? 
@@ -42,7 +42,7 @@ public class X12GenericSteps
     public static string ConvertEdiToXml(string ediString, bool inputIsPath = false)
     {
         // EDI string -> X12 Xml string
-        var parser = new X12Parser(true);
+        X12Parser parser = new X12Parser(true);
         Decisions.X12.Parsing.Model.Interchange interchange;
             
         using (FileStream fs = inputIsPath ?

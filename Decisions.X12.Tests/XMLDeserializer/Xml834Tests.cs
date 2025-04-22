@@ -30,7 +30,7 @@ public class Xml834Tests
     [Test]
     public void Deserialize834Test()
     {
-        var msg = X12Steps834.DeserializeFrom834(TEST_MSG);
+        X12Interchange834.Interchange msg = X12Steps834.DeserializeFrom834(TEST_MSG);
         Assert.Multiple(() =>
         {
             // BGN - Beginning Segment

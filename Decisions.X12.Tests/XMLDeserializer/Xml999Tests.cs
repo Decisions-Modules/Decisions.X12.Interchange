@@ -20,7 +20,7 @@ public class Xml999Tests
     [Test]
     public void Deserialize999Test()
     {
-        var msg = X12Steps999.Deserialize999(TEST_MSG);
+        X12Interchange999.Interchange msg = X12Steps999.Deserialize999(TEST_MSG);
         Assert.Multiple(() =>
         {
             Assert.That(msg.FunctionGroup.GE.GE01, Is.EqualTo("1"));

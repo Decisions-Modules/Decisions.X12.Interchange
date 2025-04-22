@@ -30,7 +30,7 @@ public class Xml837Tests
     [Test]
     public void Deserialize837Test()
     {
-        var msg = X12Steps837.Deserialize837EDI(TEST_MSG);
+        X12Interchange837.Interchange msg = X12Steps837.Deserialize837EDI(TEST_MSG);
         Assert.Multiple(() =>
         {
             Assert.That(msg.FunctionGroup.Transaction.BHT.BHT01, Is.EqualTo("0019"));

@@ -1,3 +1,4 @@
+using Decisions.X12.Interchange.Segments;
 using X12Interchange835;
 
 namespace Decisions.X12.Tests.XMLDeserializer;
@@ -31,7 +32,7 @@ public class Xml835Tests
     [Test]
     public void Deserialize835Test()
     {
-        var msg = X12Steps835.Deserialize835EDI(TEST_MSG);
+        X12Interchange835.Interchange msg = X12Steps835.Deserialize835EDI(TEST_MSG);
         Assert.Multiple(() =>
         {
             // BPR - Payment Details
@@ -72,7 +73,7 @@ public class Xml835Tests
             // Claim Payment Info (LX Loop)
             Assert.That(msg.FunctionGroup.Transaction.HeaderNumberLoop[0].LX.LX01, Is.EqualTo("1"));
 
-            var clp = msg.FunctionGroup.Transaction.HeaderNumberLoop[0].ClaimPaymentInformationLoop[0].CLP;
+            CLP clp = msg.FunctionGroup.Transaction.HeaderNumberLoop[0].ClaimPaymentInformationLoop[0].CLP;
             Assert.That(clp.CLP01, Is.EqualTo("26463774"));
             Assert.That(clp.CLP02, Is.EqualTo("1")); // Status: Processed as Primary
             Assert.That(clp.CLP03, Is.EqualTo("150")); // Billed amount
@@ -83,13 +84,13 @@ public class Xml835Tests
             Assert.That(clp.CLP09, Is.EqualTo("1")); // Claim filing indicator code
 
             // CAS - Adjustment
-            var cas = msg.FunctionGroup.Transaction.HeaderNumberLoop[0].ClaimPaymentInformationLoop[0].CAS[0];
+            CAS cas = msg.FunctionGroup.Transaction.HeaderNumberLoop[0].ClaimPaymentInformationLoop[0].CAS[0];
             Assert.That(cas.CAS01, Is.EqualTo("CO"));
             Assert.That(cas.CAS02, Is.EqualTo("45"));
             Assert.That(cas.CAS03, Is.EqualTo("50"));
 
             // NM1 - Patient
-            var nm1 = msg.FunctionGroup.Transaction.HeaderNumberLoop[0].ClaimPaymentInformationLoop[0].NM1[0];
+            NM1 nm1 = msg.FunctionGroup.Transaction.HeaderNumberLoop[0].ClaimPaymentInformationLoop[0].NM1[0];
             Assert.That(nm1.NM101, Is.EqualTo("QC"));
             Assert.That(nm1.NM103, Is.EqualTo("DOE"));
             Assert.That(nm1.NM104, Is.EqualTo("JANE"));
@@ -97,10 +98,10 @@ public class Xml835Tests
             Assert.That(nm1.NM109, Is.EqualTo("123456789"));
 
             // DTM - Service Date
-            var dtm232 = msg.FunctionGroup.Transaction.HeaderNumberLoop[0].ClaimPaymentInformationLoop[0].DTM.FirstOrDefault(x => x.DTM01 == "232");
+            DTM? dtm232 = msg.FunctionGroup.Transaction.HeaderNumberLoop[0].ClaimPaymentInformationLoop[0].DTM.FirstOrDefault(x => x.DTM01 == "232");
             Assert.That(dtm232.DTM02, Is.EqualTo("20250415"));
 
-            var dtm233 = msg.FunctionGroup.Transaction.HeaderNumberLoop[0].ClaimPaymentInformationLoop[0].DTM.FirstOrDefault(x => x.DTM01 == "233");
+            DTM? dtm233 = msg.FunctionGroup.Transaction.HeaderNumberLoop[0].ClaimPaymentInformationLoop[0].DTM.FirstOrDefault(x => x.DTM01 == "233");
             Assert.That(dtm233.DTM02, Is.EqualTo("20250420"));
         });
         
