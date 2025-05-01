@@ -5,7 +5,7 @@ namespace Decisions.X12.Interchange.Segments;
 
 public abstract class EdiSegmentBase
 {
-    public virtual string ToEdi(char elementDelimiter = '*', char segmentTerminator = '~')
+    public virtual string ToEdi(string elementDelimiter = "*", string segmentTerminator = "~")
     {
         Type type = GetType();
         string segmentId = type.GetCustomAttribute<EdiSegmentAttribute>()?.SegmentId
@@ -29,7 +29,7 @@ public abstract class EdiSegmentBase
         return string.Join(elementDelimiter, values) + segmentTerminator;
     }
 
-    public virtual void FromEdi(string ediLine, char elementDelimiter = '*')
+    public virtual void FromEdi(string ediLine, string elementDelimiter = "*")
     {
         Type type = GetType();
         string expectedSegmentId = type.GetCustomAttribute<EdiSegmentAttribute>()?.SegmentId
